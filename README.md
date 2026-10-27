@@ -187,13 +187,13 @@ Run workflow**, choosing the repository and the model.
 
 ```text
 git-afterlife/
-├── afterlife.py                     # the whole tool: git archaeology, Ollama client, altar renderer, séance
+├── afterlife.py                     # the whole tool: git archaeology, Ollama client, altar, séance
 ├── tests/
-│   └── test_afterlife.py            # builds a tiny graveyard and checks every step, with a fake model
+│   └── test_afterlife.py            # builds a tiny graveyard and checks every step with a fake model
 ├── docs/
-│   ├── cover.html                 # source of the cover image
-│   └── seance.tape                # VHS script that records the séance GIF
-├── .github/workflows/afterlife.yml  # tests, then builds the live demo with Gemma and deploys it to Pages
+│   ├── cover.html                   # source of the cover image
+│   └── seance.tape                  # VHS script that records the séance GIF
+├── .github/workflows/afterlife.yml  # tests on every push; builds and deploys the live demo on demand
 ├── README.md
 └── LICENSE
 ```
@@ -206,8 +206,7 @@ python3 -m unittest discover -s tests -v
 
 The tests create a real git repository with births, deaths, a binary and a file
 that comes back to life, and replace the model with a fake medium, so they run
-in a fraction of a second without Ollama. They run on every push before the demo
-is built.
+in a fraction of a second without Ollama. They run on every push and pull request.
 
 ## License
 

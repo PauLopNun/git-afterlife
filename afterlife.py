@@ -18,6 +18,7 @@ import json
 import os
 import random
 import re
+import shutil
 import subprocess
 import sys
 import urllib.error
@@ -86,7 +87,7 @@ def exhume(repo, ghost):
     ghost["commits"] = len(history)
     ghost["mourners"] = sorted({parse_commit(h)["author"] for h in history})
     code = body.decode(errors="replace")
-    ghost["lines"] = code.count("\n") + 1
+    ghost["lines"] = len(code.splitlines())
     ghost["code"] = code[:MAX_CODE_CHARS]
     ghost["names"] = remembered_names(path, code)
     return ghost
@@ -230,6 +231,8 @@ header p {{ margin:.6em auto; max-width:640px; opacity:.85; font-style:italic; }
 .epitaph {{ font-size:1.15rem; color:var(--rose); margin:.7em 0 .5em; }}
 .words {{ font-style:italic; line-height:1.45; }}
 .cause {{ font-size:.8rem; margin-top:.8em; opacity:.8; }}
+.epitaph code, .words code, .seance code {{ font-family:ui-monospace,monospace; font-style:normal; font-size:.88em;
+  background:#ffffff14; padding:0 4px; border-radius:4px; }}
 .cause code {{ color:var(--bone); background:#ffffff14; padding:1px 5px; border-radius:4px; }}
 details {{ margin-top:.7em; font-size:.8rem; }}
 summary {{ cursor:pointer; color:var(--violet); filter:brightness(1.6); }}
@@ -280,7 +283,7 @@ def render_seance(transcript):
         return ""
     e = html.escape
     return SEANCE.format(lines="".join(
-        f'<div class="q">{e(q)}</div><div class="a">{e(a)}</div>' for q, a in transcript))
+        f'<div class="q">{e(q)}</div><div class="a">{spoken(a)}</div>' for q, a in transcript))
 
 
 def build_altar(repo_name, model, ghosts):
@@ -289,7 +292,7 @@ def build_altar(repo_name, model, ghosts):
         flower=MARIGOLD.format(turn=random.randint(0, 90), turn2=random.randint(0, 90)),
         path=e(g["path"]), born=g["birth"]["date"], died=g["death"]["date"],
         commits=g["commits"], mourners=e(", ".join(g["mourners"][:3])),
-        epitaph=e(g["epitaph"]), words=e(g["last_words"]),
+        epitaph=spoken(g["epitaph"]), words=spoken(g["last_words"]),
         cause=e(g["death"]["subject"]), killer=e(g["death"]["author"]),
         sha=g["death"]["sha"][:7], code=e(g["code"])) for g in ghosts]
     # a Día de los Muertos altar has tiers: fewest at the top, widest at the bottom
@@ -313,8 +316,49 @@ def build_altar(repo_name, model, ghosts):
 # --- commands ----------------------------------------------------------------
 
 def repo_name(repo):
-    top = git(repo, "rev-parse", "--show-toplevel").decode().strip()
-    return os.path.basename(top)
+    """The project's name: from its origin URL if it has one, else its folder."""
+    try:
+        url = git(repo, "config", "--get", "remote.origin.url").decode().strip()
+    except RuntimeError:
+        url = git(repo, "rev-parse", "--show-toplevel").decode().strip()
+    return re.sub(r"\.git$", "", url.rstrip("/").rsplit("/", 1)[-1].rsplit(":", 1)[-1])
+
+
+def spoken(text):
+    """Escape what the spirits say, keeping their `code` as code."""
+    return re.sub(r"`([^`\n]+)`", r"<code>\1</code>", html.escape(text))
+
+
+def stream_wrapped(chunks, indent, width):
+    """Print streamed text word by word, wrapping lines without splitting words."""
+    col, word, text = indent, "", ""
+
+    def emit(word):
+        nonlocal col
+        if col > indent and col + 1 + len(word) > width:
+            print("\n" + " " * indent, end="")
+            col = indent
+        if col > indent:
+            print(" ", end="")
+            col += 1
+        print(word, end="", flush=True)
+        col += len(word)
+
+    for chunk in chunks:
+        text += chunk
+        for ch in chunk:
+            if not ch.isspace():
+                word += ch
+                continue
+            if word:
+                emit(word)
+                word = ""
+            if ch == "\n" and col > indent:
+                print("\n" + " " * indent, end="")
+                col = indent
+    if word:
+        emit(word)
+    return text
 
 
 def summon(args):
@@ -365,10 +409,8 @@ def seance(args):
             return
         messages.append({"role": "user", "content": question})
         print("spirit › ", end="", flush=True)
-        answer = ""
-        for chunk in ollama_chat(args.model, messages, stream=True):
-            answer += chunk
-            print(chunk, end="", flush=True)
+        width = min(shutil.get_terminal_size((100, 24)).columns, 100) - 1
+        answer = stream_wrapped(ollama_chat(args.model, messages, stream=True), 9, width)
         print("\n")
         messages.append({"role": "assistant", "content": answer})
 

@@ -31,9 +31,10 @@ jobs:
       - name: Run the tests
         run: python3 -m unittest discover -s tests -v
 
+  # The demo is only rebuilt on demand: model output changes on every run.
   summon:
     needs: test
-    if: github.event_name != 'pull_request'
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     env:
       REPO: ${{ inputs.repo || 'https://github.com/pallets/flask.git' }}
@@ -51,12 +52,15 @@ jobs:
         run: ollama pull "$MODEL"
 
       - name: Dig up the repository
-        run: git clone --quiet --filter=blob:none "$REPO" graveyard
+        run: |
+          NAME=$(basename "$REPO" .git)
+          git clone --quiet --filter=blob:none "$REPO" "$NAME"
+          echo "NAME=$NAME" >> "$GITHUB_ENV"
 
       - name: Build the altar
         run: |
           mkdir site
-          python3 afterlife.py summon graveyard --model "$MODEL" --out site/index.html
+          python3 afterlife.py summon "$NAME" --model "$MODEL" --out site/index.html
 
       - name: Hold a séance with the original flask.py
         if: env.REPO == 'https://github.com/pallets/flask.git'
@@ -67,7 +71,7 @@ jobs:
             "Why did they delete you?" \
             "Do you have a message for the developers who use Flask today?" \
             "bye" \
-            | python3 afterlife.py seance flask.py graveyard --model "$MODEL" | tee site/seance.txt
+            | python3 afterlife.py seance flask.py "$NAME" --model "$MODEL" | tee site/seance.txt
 
       - name: Take the portraits
         run: |

@@ -1,12 +1,14 @@
 """Tests for git-afterlife. They build a tiny repository with real births and deaths
 and replace the model with a fake medium, so no Ollama is needed."""
 
+import io
 import json
 import os
 import subprocess
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stdout
 from unittest import mock
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -108,6 +110,31 @@ class Graveyard(unittest.TestCase):
         self.assertEqual(transcript[0], ("Who are you, spirit?", "I am legacy.py."))
         self.assertEqual(len(transcript), 3)
         self.assertEqual(seen, [2, 4, 6])  # each question carries the séance so far
+
+    def test_the_project_is_named_after_its_origin(self):
+        self.assertEqual(afterlife.repo_name(self.repo), os.path.basename(self.repo))
+        sh(self.repo, "remote", "add", "origin", "https://github.com/pallets/flask.git")
+        try:
+            self.assertEqual(afterlife.repo_name(self.repo), "flask")
+        finally:
+            sh(self.repo, "remote", "remove", "origin")
+
+    def test_spirits_keep_their_code_as_code(self):
+        self.assertEqual(afterlife.spoken("I held `Request` & <b>"),
+                         "I held <code>Request</code> &amp; &lt;b&gt;")
+
+    def test_seance_answers_wrap_without_splitting_words(self):
+        out = io.StringIO()
+        with redirect_stdout(out):
+            text = afterlife.stream_wrapped(["I held Req", "uest and Response ", "for years"], 4, 20)
+        self.assertEqual(text, "I held Request and Response for years")
+        lines = out.getvalue().split("\n")
+        self.assertEqual([l.strip() for l in lines], ["I held Request", "and Response for", "years"])
+        self.assertTrue(all(len(l) <= 20 for l in lines))
+
+    def test_line_count_is_exact(self):
+        g = afterlife.exhume(self.repo, self.dead()["app/legacy.py"])
+        self.assertEqual(g["lines"], 5)
 
     def test_altar_escapes_everything_it_is_told(self):
         g = afterlife.exhume(self.repo, self.dead()["app/legacy.py"])
