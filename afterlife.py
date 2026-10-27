@@ -224,7 +224,7 @@ header p {{ margin:.6em auto; max-width:640px; opacity:.85; font-style:italic; }
 .candle::before {{ content:""; position:absolute; top:-14px; left:1px; width:8px; height:14px; border-radius:50% 50% 40% 40%;
   background:radial-gradient(#fff6c2,var(--marigold) 60%,transparent 70%); animation:flicker .18s infinite alternate; }}
 @keyframes flicker {{ to {{ transform:scale(.88,1.08) translateX(.5px); opacity:.85; }} }}
-.skull {{ font-size:2rem; }}
+.flower {{ width:38px; height:38px; display:block; filter:drop-shadow(0 0 6px #ff9f1c66); }}
 .name {{ font-family:ui-monospace,monospace; color:var(--marigold); word-break:break-all; font-size:.95rem; margin:.3em 0; }}
 .dates {{ font-size:.8rem; opacity:.75; }}
 .epitaph {{ font-size:1.15rem; color:var(--rose); margin:.7em 0 .5em; }}
@@ -256,7 +256,7 @@ Their epitaphs were written by <code>{model}</code>, running locally. No code le
 </body></html>"""
 
 CARD = """<article class="ghost"><div class="candle"></div>
-<div class="skull">{skull}</div>
+{flower}
 <div class="name">{path}</div>
 <div class="dates">{born} &rarr; {died} &middot; {commits} commits &middot; mourned by {mourners}</div>
 <div class="epitaph">&ldquo;{epitaph}&rdquo;</div>
@@ -265,7 +265,14 @@ CARD = """<article class="ghost"><div class="candle"></div>
 {seance}<details><summary>Their portrait (last known source)</summary><pre>{code}</pre></details>
 </article>"""
 
-SEANCE = """<details open><summary>👻 Séance</summary><div class="seance">{lines}</div></details>"""
+MARIGOLD = """<svg class="flower" viewBox="0 0 40 40" aria-hidden="true">
+<g fill="none" stroke-width="2.2">
+<circle cx="20" cy="20" r="16" stroke="#ff9f1c" stroke-dasharray="5 3.4" transform="rotate({turn} 20 20)"/>
+<circle cx="20" cy="20" r="11" stroke="#ffb347" stroke-dasharray="4 2.8" transform="rotate({turn2} 20 20)"/>
+<circle cx="20" cy="20" r="6.5" stroke="#ffd23f" stroke-dasharray="3 2.2"/>
+</g><circle cx="20" cy="20" r="2.6" fill="#e84a8a"/></svg>"""
+
+SEANCE = """<details open><summary>Séance</summary><div class="seance">{lines}</div></details>"""
 
 
 def render_seance(transcript):
@@ -279,7 +286,7 @@ def render_seance(transcript):
 def build_altar(repo_name, model, ghosts):
     e = html.escape
     cards = [CARD.format(seance=render_seance(g.get("seance")),
-        skull=random.choice(["💀", "🕯️", "🌼", "👻", "🦴"]),
+        flower=MARIGOLD.format(turn=random.randint(0, 90), turn2=random.randint(0, 90)),
         path=e(g["path"]), born=g["birth"]["date"], died=g["death"]["date"],
         commits=g["commits"], mourners=e(", ".join(g["mourners"][:3])),
         epitaph=e(g["epitaph"]), words=e(g["last_words"]),
@@ -322,14 +329,14 @@ def summon(args):
             ghosts.append(g)
     print(f"Found {len(dead)} deleted files; raising {len(ghosts)} of them.", file=sys.stderr)
     for n, g in enumerate(ghosts, 1):
-        print(f"  [{n}/{len(ghosts)}] 🕯️  {g['path']}", file=sys.stderr)
+        print(f"  [{n}/{len(ghosts)}] {g['path']}", file=sys.stderr)
         if args.dry_run:
             g["epitaph"], g["last_words"] = "(dry run)", "(the model was not consulted)"
         else:
             g["epitaph"], g["last_words"] = write_epitaph(args.model, args.lang, g)
             print(f"        \"{g['epitaph']}\"", file=sys.stderr)
             if n <= args.seances:
-                print("        👻 holding a séance...", file=sys.stderr)
+                print("        holding a séance...", file=sys.stderr)
                 g["seance"] = hold_seance(args.model, args.lang, g)
     with open(args.out, "w", encoding="utf-8") as f:
         f.write(build_altar(repo_name(args.repo), args.model, ghosts))
@@ -341,9 +348,9 @@ def seance(args):
     if not ghost or not exhume(args.repo, ghost):
         sys.exit(f"No restless text file named {args.path} rests in this repository's history.")
     messages = [{"role": "system", "content": seance_prompt(ghost, args.lang)}]
-    print(f"🕯️  The candles flicker. The spirit of {ghost['path']} "
+    print(f"The candles flicker. The spirit of {ghost['path']} "
           f"({ghost['birth']['date']} – {ghost['death']['date']}) is listening.")
-    print("   Ask your questions. Type 'bye' to let it rest.\n")
+    print("Ask your questions. Type 'bye' to let it rest.\n")
     while True:
         try:
             question = input("you › ").strip()
@@ -354,10 +361,10 @@ def seance(args):
         if not question:
             continue
         if question.lower() in {"bye", "goodbye", "exit", "quit"}:
-            print("👻 ...and the spirit returns to the commit log.")
+            print("...and the spirit returns to the commit log.")
             return
         messages.append({"role": "user", "content": question})
-        print("👻 › ", end="", flush=True)
+        print("spirit › ", end="", flush=True)
         answer = ""
         for chunk in ollama_chat(args.model, messages, stream=True):
             answer += chunk

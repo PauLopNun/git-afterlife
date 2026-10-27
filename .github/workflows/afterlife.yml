@@ -41,9 +41,8 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Install Ollama and emoji fonts
+      - name: Install Ollama
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-color-emoji > /dev/null
           curl -fsSL https://ollama.com/install.sh | sh
           curl -sf http://localhost:11434/api/version || (ollama serve > /tmp/ollama.log 2>&1 &)
           for i in $(seq 30); do curl -sf http://localhost:11434/api/version && break; sleep 1; done

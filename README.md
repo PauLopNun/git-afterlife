@@ -3,7 +3,7 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:140b1f,50:7b4bb8,100:ff9f1c&text=git-afterlife&fontColor=f6ead7&fontSize=64&fontAlignY=38&desc=A%20D%C3%ADa%20de%20los%20Muertos%20altar%20for%20the%20code%20your%20repository%20buried&descAlignY=60&descSize=18&animation=fadeIn" alt="git-afterlife" width="100%">
 
 [![Live altar](https://img.shields.io/badge/live%20demo-the%20altar-ff9f1c?style=for-the-badge&logo=githubpages&logoColor=white)](https://paulopnun.github.io/git-afterlife/)
-[![Séance](https://img.shields.io/badge/transcript-the%20s%C3%A9ance-e84a8a?style=for-the-badge&logo=ghost&logoColor=white)](https://paulopnun.github.io/git-afterlife/seance.txt)
+[![Séance](https://img.shields.io/badge/transcript-the%20s%C3%A9ance-e84a8a?style=for-the-badge)](https://paulopnun.github.io/git-afterlife/seance.txt)
 [![Raise the altar](https://img.shields.io/github/actions/workflow/status/PauLopNun/git-afterlife/afterlife.yml?branch=main&style=for-the-badge&label=altar&logo=githubactions&logoColor=white)](https://github.com/PauLopNun/git-afterlife/actions/workflows/afterlife.yml)
 
 ![Python](https://img.shields.io/badge/python-3.8%2B-3776AB?style=flat-square&logo=python&logoColor=white)
@@ -57,12 +57,12 @@ remembers its real code, who created it, and why it was removed.
 
 The most famous souls on the [Flask altar](https://paulopnun.github.io/git-afterlife/), straight from its git history:
 
-| | The deceased | Lived | Commits | Killed by | Cause of death |
-| :---: | --- | --- | :---: | --- | --- |
-| 💀 | `flask.py` | 2010-04-06 → 2010-07-02 | 104 | Justin Quick | `out with the old` |
-| 🕯️ | `tests/flask_tests.py` | 2010-04-14 → 2011-08-26 | 134 | Armin Ronacher | `Split up testsuite and moved it to flask.testsuite` |
-| 🌼 | `setup.py` | 2010-04-06 → 2023-01-18 | 121 | David Lord | `switch to pyproject.toml` |
-| 👻 | `docs/deploying/fastcgi.rst` | 2010-04-19 → 2022-06-12 | 32 | David Lord | `rewrite deployment docs` |
+| The deceased | Lived | Commits | Killed by | Cause of death |
+| --- | --- | :---: | --- | --- |
+| `flask.py` | 2010-04-06 → 2010-07-02 | 104 | Justin Quick | `out with the old` |
+| `tests/flask_tests.py` | 2010-04-14 → 2011-08-26 | 134 | Armin Ronacher | `Split up testsuite and moved it to flask.testsuite` |
+| `setup.py` | 2010-04-06 → 2023-01-18 | 121 | David Lord | `switch to pyproject.toml` |
+| `docs/deploying/fastcgi.rst` | 2010-04-19 → 2022-06-12 | 32 | David Lord | `rewrite deployment docs` |
 
 ## The challenge
 
@@ -116,13 +116,14 @@ python3 afterlife.py seance flask.py ~/src/flask
 ```
 
 ```text
-🕯️  The candles flicker. The spirit of flask.py (2010-04-06 – 2010-07-02) is listening.
-   Ask your questions. Type 'bye' to let it rest.
+The candles flicker. The spirit of flask.py (2010-04-06 – 2010-07-02) is listening.
+Ask your questions. Type 'bye' to let it rest.
 
 you › Why did they delete you?
-👻 › It was Justin Quick, you see. A single commit, a dismissive message: "out with
-     the old." He simply… deleted me. My last known state, the one I clung to,
-     vanished with that commit. It was a strange, sudden end for a fledgling framework.
+spirit › It was Justin Quick, you see. A single commit, a dismissive message: "out
+         with the old." He simply… deleted me. My last known state, the one I clung
+         to, vanished with that commit. It was a strange, sudden end for a fledgling
+         framework.
 ```
 
 *A real answer from the [demo séance](https://paulopnun.github.io/git-afterlife/seance.txt), by Gemma 3 4B.*
@@ -176,8 +177,8 @@ single-file `flask.py` (2010), takes screenshots with headless Chrome, records
 the séance GIF with [VHS](https://github.com/charmbracelet/vhs), and publishes
 everything to GitHub Pages:
 
-- 🌼 [The altar](https://paulopnun.github.io/git-afterlife/)
-- 👻 [The séance transcript](https://paulopnun.github.io/git-afterlife/seance.txt)
+- [The altar](https://paulopnun.github.io/git-afterlife/)
+- [The séance transcript](https://paulopnun.github.io/git-afterlife/seance.txt)
 
 You can run it for any public repository from **Actions → Raise the altar →
 Run workflow**, choosing the repository and the model.
