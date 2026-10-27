@@ -18,6 +18,10 @@
 
 <img src="https://skillicons.dev/icons?i=python,git,github,githubactions,html,css,linux&theme=dark" alt="Python, Git, GitHub, GitHub Actions, HTML, CSS, Linux">
 
+<br><br>
+
+<a href="https://paulopnun.github.io/git-ofrenda/"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=20&duration=3500&pause=1200&color=FF9F1C&center=true&vCenter=true&width=760&lines=Every+repository+has+a+graveyard.;flask.py+(2010-04-06+-+2010-07-02)%3A+%22out+with+the+old%22;Light+a+candle+for+the+code+you+deleted.;Your+code+never+leaves+your+machine." alt="Every repository has a graveyard."></a>
+
 </div>
 
 <br>
@@ -48,6 +52,17 @@ remembers its real code, who created it, and why it was removed.
 <p align="center"><img src="https://paulopnun.github.io/git-ofrenda/altar.png" alt="The ofrenda raised for Flask: tiers of deleted files, each with dates, epitaph, last words and cause of death" width="100%"></p>
 
 <p align="center"><img src="https://paulopnun.github.io/git-ofrenda/seance.gif" alt="A séance in the terminal with the original flask.py" width="100%"></p>
+
+## Hall of the dead
+
+The most famous souls on the [Flask altar](https://paulopnun.github.io/git-ofrenda/), straight from its git history:
+
+| | The deceased | Lived | Commits | Killed by | Cause of death |
+| :---: | --- | --- | :---: | --- | --- |
+| 💀 | `flask.py` | 2010-04-06 → 2010-07-02 | 104 | Justin Quick | `out with the old` |
+| 🕯️ | `tests/flask_tests.py` | 2010-04-14 → 2011-08-26 | 134 | Armin Ronacher | `Split up testsuite and moved it to flask.testsuite` |
+| 🌼 | `setup.py` | 2010-04-06 → 2023-01-18 | 121 | David Lord | `switch to pyproject.toml` |
+| 👻 | `docs/deploying/fastcgi.rst` | 2010-04-19 → 2022-06-12 | 32 | David Lord | `rewrite deployment docs` |
 
 ## The challenge
 
@@ -162,7 +177,7 @@ the séance GIF with [VHS](https://github.com/charmbracelet/vhs), and publishes
 everything to GitHub Pages:
 
 - 🌼 [The ofrenda, in English](https://paulopnun.github.io/git-ofrenda/)
-- 🌼 [La ofrenda, en español](https://paulopnun.github.io/git-ofrenda/es.html)
+- 🌼 [The ofrenda in Spanish](https://paulopnun.github.io/git-ofrenda/es.html), raised with `--lang Spanish`
 - 👻 [The séance transcript](https://paulopnun.github.io/git-ofrenda/seance.txt)
 
 You can run it for any public repository from **Actions → Raise the ofrenda →
