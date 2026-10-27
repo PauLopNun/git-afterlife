@@ -1,21 +1,28 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:140b1f,50:7b4bb8,100:ff9f1c&text=git-afterlife&fontColor=f6ead7&fontSize=64&fontAlignY=38&desc=A%20D%C3%ADa%20de%20los%20Muertos%20altar%20for%20the%20code%20your%20repository%20buried&descAlignY=60&descSize=18&animation=fadeIn" alt="git-afterlife" width="100%">
+<img src="https://paulopnun.github.io/git-afterlife/cover.png" alt="git-afterlife: a Día de los Muertos altar for the code your repository buried" width="100%">
 
-[![Read the story on DEV](https://img.shields.io/badge/read%20the%20story-on%20DEV-0a0a0a?style=for-the-badge&logo=devdotto&logoColor=white)](https://dev.to/paulopnun/git-afterlife-i-held-a-seance-for-the-original-flaskpy-36o5)
-[![Live altar](https://img.shields.io/badge/live%20demo-the%20altar-ff9f1c?style=for-the-badge&logo=githubpages&logoColor=white)](https://paulopnun.github.io/git-afterlife/)
-[![Séance](https://img.shields.io/badge/transcript-the%20s%C3%A9ance-e84a8a?style=for-the-badge)](https://paulopnun.github.io/git-afterlife/seance.txt)
-[![Raise the altar](https://img.shields.io/github/actions/workflow/status/PauLopNun/git-afterlife/afterlife.yml?branch=main&style=for-the-badge&label=altar&logo=githubactions&logoColor=white)](https://github.com/PauLopNun/git-afterlife/actions/workflows/afterlife.yml)
+<br><br>
 
-![Python](https://img.shields.io/badge/python-3.8%2B-3776AB?style=flat-square&logo=python&logoColor=white)
-![Ollama](https://img.shields.io/badge/runs%20on-Ollama-000000?style=flat-square&logo=ollama&logoColor=white)
-![Gemma](https://img.shields.io/badge/model-Gemma%203-4285F4?style=flat-square&logo=google&logoColor=white)
-![Dependencies](https://img.shields.io/badge/dependencies-0-2ec4b6?style=flat-square)
-![Offline](https://img.shields.io/badge/works-offline-7b4bb8?style=flat-square)
-![License](https://img.shields.io/badge/license-MIT-ffd23f?style=flat-square)
-[![Hacktoberfest 2026](https://img.shields.io/badge/Hacktoberfest%202026-Ghost%20in%20the%20Machine-ff6b35?style=flat-square&logo=devdotto&logoColor=white)](https://dev.to/challenges/hacktoberfest-week4-2026-10-26)
+<a href="https://dev.to/paulopnun/git-afterlife-i-held-a-seance-for-the-original-flaskpy-36o5"><img src="https://img.shields.io/badge/read%20the%20story-on%20DEV-0a0a0a?style=for-the-badge&logo=devdotto&logoColor=white" alt="Read the story on DEV"></a>&nbsp;
+<a href="https://paulopnun.github.io/git-afterlife/"><img src="https://img.shields.io/badge/live%20demo-the%20altar-ff9f1c?style=for-the-badge&logo=githubpages&logoColor=white" alt="Live altar"></a>&nbsp;
+<a href="https://paulopnun.github.io/git-afterlife/seance.txt"><img src="https://img.shields.io/badge/transcript-the%20s%C3%A9ance-e84a8a?style=for-the-badge" alt="Séance transcript"></a>&nbsp;
+<a href="https://github.com/PauLopNun/git-afterlife/actions/workflows/afterlife.yml"><img src="https://img.shields.io/github/actions/workflow/status/PauLopNun/git-afterlife/afterlife.yml?branch=main&style=for-the-badge&label=tests&logo=githubactions&logoColor=white" alt="Tests"></a>
 
-<br>
+<br><br>
+
+<img src="https://img.shields.io/badge/python-3.8%2B-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.8+">&nbsp;
+<img src="https://img.shields.io/badge/runs%20on-Ollama-000000?style=flat-square&logo=ollama&logoColor=white" alt="Runs on Ollama">&nbsp;
+<img src="https://img.shields.io/badge/model-Gemma%203-4285F4?style=flat-square&logo=google&logoColor=white" alt="Model: Gemma 3">&nbsp;
+<img src="https://img.shields.io/badge/dependencies-0-2ec4b6?style=flat-square" alt="Zero dependencies">&nbsp;
+<img src="https://img.shields.io/badge/works-offline-7b4bb8?style=flat-square" alt="Works offline">&nbsp;
+<img src="https://img.shields.io/badge/license-MIT-ffd23f?style=flat-square" alt="MIT license">
+
+<br><br>
+
+<a href="https://dev.to/challenges/hacktoberfest-week4-2026-10-26"><img src="https://img.shields.io/badge/Hacktoberfest%202026-Week%204%3A%20Ghost%20in%20the%20Machine-ff6b35?style=flat-square&logo=devdotto&logoColor=white" alt="Hacktoberfest 2026, Week 4: Ghost in the Machine"></a>
+
+<br><br>
 
 <img src="https://skillicons.dev/icons?i=python,git,github,githubactions,html,css,linux&theme=dark" alt="Python, Git, GitHub, GitHub Actions, HTML, CSS, Linux">
 
@@ -24,10 +31,6 @@
 <a href="https://paulopnun.github.io/git-afterlife/"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=20&duration=3500&pause=1200&color=FF9F1C&center=true&vCenter=true&width=760&lines=Every+repository+has+a+graveyard.;flask.py+(2010-04-06+-+2010-07-02)%3A+%22out+with+the+old%22;Light+a+candle+for+the+code+you+deleted.;Your+code+never+leaves+your+machine." alt="Every repository has a graveyard."></a>
 
 </div>
-
-<br>
-
-<p align="center"><img src="https://paulopnun.github.io/git-afterlife/cover.png" alt="git-afterlife: a Día de los Muertos altar for the code your repository buried" width="100%"></p>
 
 Every repository has a graveyard: files born in a hopeful first commit, carried
 through dozens of refactors, and finally deleted with a one-line commit message.
