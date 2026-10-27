@@ -98,9 +98,13 @@ python3 ofrenda.py seance flask.py ~/src/flask
 🕯️  The candles flicker. The spirit of flask.py (2010-04-06 – 2010-07-02) is listening.
    Ask your questions. Type 'adiós' to let it rest.
 
-you › why did they delete you?
-👻 › ...
+you › Why did they delete you?
+👻 › It was Justin Quick, you see. A single commit, a dismissive message: "out with
+     the old." He simply… deleted me. My last known state, the one I clung to,
+     vanished with that commit. It was a strange, sudden end for a fledgling framework.
 ```
+
+*A real answer from the [demo séance](https://paulopnun.github.io/git-ofrenda/seance.txt), by Gemma 3 4B.*
 
 ## Options
 

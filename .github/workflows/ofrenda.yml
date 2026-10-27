@@ -3,6 +3,7 @@ name: Raise the ofrenda
 on:
   push:
     branches: [main]
+    paths-ignore: ['**.md', 'LICENSE']
   workflow_dispatch:
     inputs:
       repo:
