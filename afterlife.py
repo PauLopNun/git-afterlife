@@ -108,7 +108,8 @@ def remembered_names(path, code):
 
 def ollama_chat(model, messages, json_mode=False, stream=False):
     payload = {"model": model, "messages": messages, "stream": stream,
-               "options": {"temperature": 0.9}}
+               # a cap on length keeps a small model from rambling past its answer
+               "options": {"temperature": 0.9, "num_predict": 200 if json_mode else 260}}
     if json_mode:
         payload["format"] = "json"
     req = urllib.request.Request(OLLAMA_URL + "/api/chat",
@@ -154,15 +155,21 @@ def write_epitaph(model, lang, ghost):
         "Reply ONLY with JSON:\n"
         '{"epitaph": "one line for the tombstone, max 12 words", '
         '"last_words": "two sentences in first person, spoken by the file"}')
-    for _ in range(3):
+    for _ in range(4):
         raw = ollama_chat(model, [{"role": "user", "content": prompt}], json_mode=True)
         try:
             data = json.loads(raw)
-            if data.get("epitaph") and data.get("last_words"):
-                return str(data["epitaph"]), str(data["last_words"])
         except json.JSONDecodeError:
-            pass
+            continue
+        epitaph, words = str(data.get("epitaph", "")).strip(), str(data.get("last_words", "")).strip()
+        if well_spoken(epitaph, 120) and well_spoken(words, 360):
+            return epitaph, words
     return "Here lies code that did its job.", "I was. Then I was refactored."
+
+
+def well_spoken(text, limit):
+    """Reject empty, overlong or garbled answers (stray JSON, runs of digits)."""
+    return 0 < len(text) <= limit and not re.search(r"[{}\[\]]|\d{6,}", text)
 
 
 def seance_prompt(ghost, lang):

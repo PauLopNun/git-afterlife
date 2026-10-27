@@ -90,6 +90,16 @@ class Graveyard(unittest.TestCase):
             self.assertEqual(afterlife.write_epitaph("m", "English", g),
                              ("Parsed all but its own.", "I was. Then Carlos."))
 
+    def test_garbled_epitaphs_are_asked_again(self):
+        g = afterlife.exhume(self.repo, self.dead()["app/legacy.py"])
+        garbage = "I ran the tests.”} } 2023-10-27 7318812198279155914 4451412024718967676"
+        replies = iter([json.dumps({"epitaph": "Tidy.", "last_words": garbage}),
+                        json.dumps({"epitaph": "x" * 200, "last_words": "Fine."}),
+                        json.dumps({"epitaph": "Tidy to the end.", "last_words": "Carlos swept me away."})])
+        with mock.patch.object(afterlife, "ollama_chat", side_effect=lambda *a, **k: next(replies)):
+            self.assertEqual(afterlife.write_epitaph("m", "English", g),
+                             ("Tidy to the end.", "Carlos swept me away."))
+
     def test_seance_is_told_the_true_cause_of_death(self):
         g = afterlife.exhume(self.repo, self.dead()["app/legacy.py"])
         prompt = afterlife.seance_prompt(g, "French")
