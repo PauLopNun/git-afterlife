@@ -1,0 +1,74 @@
+name: Raise the ofrenda
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: Public git repository whose dead will be honored
+        default: https://github.com/pallets/flask.git
+      model:
+        description: Ollama model
+        default: gemma3:1b
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  summon:
+    runs-on: ubuntu-latest
+    env:
+      REPO: ${{ inputs.repo || 'https://github.com/pallets/flask.git' }}
+      MODEL: ${{ inputs.model || 'gemma3:1b' }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install Ollama
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+          curl -sf http://localhost:11434/api/version || (ollama serve > /tmp/ollama.log 2>&1 &)
+          for i in $(seq 30); do curl -sf http://localhost:11434/api/version && break; sleep 1; done
+
+      - name: Pull the model
+        run: ollama pull "$MODEL"
+
+      - name: Dig up the repository
+        run: git clone --quiet --filter=blob:none "$REPO" graveyard
+
+      - name: Build the altar
+        run: |
+          mkdir site
+          python3 ofrenda.py summon graveyard --model "$MODEL" --limit 10 --out site/index.html
+          python3 ofrenda.py summon graveyard --model "$MODEL" --limit 10 --lang Spanish --out site/es.html
+
+      - name: Hold a séance with the original flask.py
+        if: env.REPO == 'https://github.com/pallets/flask.git'
+        run: |
+          printf '%s\n' \
+            "Who are you, spirit?" \
+            "What did you do when you were alive?" \
+            "Why did they delete you?" \
+            "Do you have a message for the developers who use Flask today?" \
+            "adiós" \
+            | python3 ofrenda.py seance flask.py graveyard --model "$MODEL" | tee site/seance.txt
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+  deploy:
+    needs: summon
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

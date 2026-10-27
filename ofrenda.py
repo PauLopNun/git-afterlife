@@ -287,6 +287,8 @@ def seance(args):
             question = input("you › ").strip()
         except (EOFError, KeyboardInterrupt):
             question = "adiós"
+        if not sys.stdin.isatty():
+            print(question)
         if not question:
             continue
         if question.lower() in {"adiós", "adios", "bye", "exit", "quit"}:
