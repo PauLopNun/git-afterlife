@@ -17,6 +17,7 @@ import html
 import json
 import os
 import random
+import re
 import subprocess
 import sys
 import urllib.error
@@ -87,7 +88,19 @@ def exhume(repo, ghost):
     code = body.decode(errors="replace")
     ghost["lines"] = code.count("\n") + 1
     ghost["code"] = code[:MAX_CODE_CHARS]
+    ghost["names"] = remembered_names(path, code)
     return ghost
+
+
+def remembered_names(path, code):
+    """Functions, classes and doc headings: the things a file would remember about itself."""
+    names = re.findall(r"^\s*(?:async\s+)?(?:def|class|function|func|fn)\s+(\w+)", code, re.M)
+    if path.endswith((".md", ".markdown")):
+        names += re.findall(r"^#{1,3}\s+(.+)$", code, re.M)
+    names += re.findall(r"^(\S[^\n]{2,60})\n[=\-~]{3,}\s*$", code, re.M)
+    if not names:
+        names = re.findall(r"^([\w.-]+):", code, re.M)
+    return list(dict.fromkeys(n.strip() for n in names))[:12]
 
 
 # --- talking to the other side (Ollama) -------------------------------------
@@ -117,19 +130,29 @@ def describe(ghost):
             f"Died: {ghost['death']['date']} by {ghost['death']['author']} "
             f"(commit message: \"{ghost['death']['subject']}\")\n"
             f"Lived through {ghost['commits']} commits, {ghost['lines']} lines long.\n"
+            f"Things it contained: {', '.join(ghost['names']) or 'nothing worth naming'}\n"
             f"Its final source code:\n```\n{ghost['code']}\n```")
+
+
+CLICHES = "digital dust, echoes, void, silent plea, forgotten dream, shadow, whisper, abyss"
 
 
 def write_epitaph(model, lang, ghost):
     prompt = (
-        "You are a poet writing for a Día de los Muertos ofrenda dedicated to "
-        "source code files that were deleted from a git repository. Be tender, "
-        "a little eerie, a little funny. Refer to what the code actually did.\n\n"
+        "You write epitaphs for a Día de los Muertos ofrenda honoring source code "
+        "files deleted from a git repository. Tone: tender, wry, a little eerie, like "
+        "a calavera literaria. Be specific: name at least one real thing from the "
+        "file (a function, class, section or setting) and allude to the real commit "
+        f"message that deleted it. Never use these clichés: {CLICHES}.\n\n"
         f"{describe(ghost)}\n\n"
-        f"Write in {lang}. Reply ONLY with JSON of this shape:\n"
-        '{"epitaph": "one short line for the tombstone, max 12 words", '
-        '"last_words": "two sentences spoken by the file itself, in first person, '
-        'about its life and its death"}')
+        "Example of the style, for a deleted utils.py that held parse_date():\n"
+        '{"epitaph": "Parsed every date but its own.", "last_words": "For six years '
+        "I turned strings into Tuesdays for anyone who asked. Then someone wrote "
+        "'use dateutil' and I learned what a deprecation feels like.\"}\n\n"
+        f"Now write the one for {ghost['path']}. Both values MUST be written in {lang}. "
+        "Reply ONLY with JSON:\n"
+        '{"epitaph": "one line for the tombstone, max 12 words", '
+        '"last_words": "two sentences in first person, spoken by the file"}')
     for _ in range(3):
         raw = ollama_chat(model, [{"role": "user", "content": prompt}], json_mode=True)
         try:
@@ -275,9 +298,12 @@ def seance(args):
         f"These are the true facts of your life:\n\n{describe(ghost)}\n\n"
         "Speak in first person as this file, from beyond the grave, during a Día de los "
         "Muertos séance. Be eerie, warm and a bit dramatic, but keep answers short "
-        "(under 80 words). Ground everything in your real code and commit history; if "
-        "asked something those facts don't cover, say the memory is lost in the void. "
-        f"Speak {args.lang}.")
+        "(under 80 words). Ground everything in your real code and commit history: "
+        "mention your real functions and the people who wrote you by name. If asked "
+        f"why you died, the truth is that {ghost['death']['author']} deleted you in a "
+        f"commit whose message was \"{ghost['death']['subject']}\"; quote it, never "
+        "invent bugs or other reasons. If asked something these facts don't cover, "
+        f"say that memory did not survive the grave. Speak only {args.lang}.")
     messages = [{"role": "system", "content": system}]
     print(f"🕯️  The candles flicker. The spirit of {ghost['path']} "
           f"({ghost['birth']['date']} – {ghost['death']['date']}) is listening.")

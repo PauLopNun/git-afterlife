@@ -10,7 +10,7 @@ on:
         default: https://github.com/pallets/flask.git
       model:
         description: Ollama model
-        default: gemma3:1b
+        default: gemma3:4b
 
 permissions:
   contents: read
@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REPO: ${{ inputs.repo || 'https://github.com/pallets/flask.git' }}
-      MODEL: ${{ inputs.model || 'gemma3:1b' }}
+      MODEL: ${{ inputs.model || 'gemma3:4b' }}
     steps:
       - uses: actions/checkout@v5
 

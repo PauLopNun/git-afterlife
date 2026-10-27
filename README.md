@@ -141,7 +141,7 @@ flowchart LR
 ## Live demo, built by GitHub Actions
 
 The [workflow](.github/workflows/ofrenda.yml) installs Ollama on a GitHub
-runner, pulls Gemma 3, clones [Flask](https://github.com/pallets/flask), raises
+runner, pulls Gemma 3 4B, clones [Flask](https://github.com/pallets/flask), raises
 its altar in English and in Spanish, holds a séance with the original
 single-file `flask.py` (2010), and publishes everything to GitHub Pages:
 
