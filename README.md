@@ -2,6 +2,7 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:140b1f,50:7b4bb8,100:ff9f1c&text=git-afterlife&fontColor=f6ead7&fontSize=64&fontAlignY=38&desc=A%20D%C3%ADa%20de%20los%20Muertos%20altar%20for%20the%20code%20your%20repository%20buried&descAlignY=60&descSize=18&animation=fadeIn" alt="git-afterlife" width="100%">
 
+[![Read the story on DEV](https://img.shields.io/badge/read%20the%20story-on%20DEV-0a0a0a?style=for-the-badge&logo=devdotto&logoColor=white)](https://dev.to/paulopnun/git-afterlife-i-held-a-seance-for-the-original-flaskpy-36o5)
 [![Live altar](https://img.shields.io/badge/live%20demo-the%20altar-ff9f1c?style=for-the-badge&logo=githubpages&logoColor=white)](https://paulopnun.github.io/git-afterlife/)
 [![Séance](https://img.shields.io/badge/transcript-the%20s%C3%A9ance-e84a8a?style=for-the-badge)](https://paulopnun.github.io/git-afterlife/seance.txt)
 [![Raise the altar](https://img.shields.io/github/actions/workflow/status/PauLopNun/git-afterlife/afterlife.yml?branch=main&style=for-the-badge&label=altar&logo=githubactions&logoColor=white)](https://github.com/PauLopNun/git-afterlife/actions/workflows/afterlife.yml)
@@ -12,7 +13,7 @@
 ![Dependencies](https://img.shields.io/badge/dependencies-0-2ec4b6?style=flat-square)
 ![Offline](https://img.shields.io/badge/works-offline-7b4bb8?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-ffd23f?style=flat-square)
-[![Hacktoberfest 2026](https://img.shields.io/badge/Hacktoberfest%202026-Ghost%20in%20the%20Machine-ff6b35?style=flat-square&logo=devdotto&logoColor=white)](https://dev.to/challenges)
+[![Hacktoberfest 2026](https://img.shields.io/badge/Hacktoberfest%202026-Ghost%20in%20the%20Machine-ff6b35?style=flat-square&logo=devdotto&logoColor=white)](https://dev.to/challenges/hacktoberfest-week4-2026-10-26)
 
 <br>
 
@@ -75,6 +76,8 @@ The most famous souls on the [Flask altar](https://paulopnun.github.io/git-after
 This project was built for the **Hacktoberfest 2026 Open-Source AI Challenge,
 Week 4: _Ghost in the Machine_** on DEV, whose prompt is to build something with
 open-source AI at its core, either spooky or in the spirit of Día de los Muertos.
+
+**Read the full write-up on DEV: [git-afterlife: I Held a Séance for the Original flask.py](https://dev.to/paulopnun/git-afterlife-i-held-a-seance-for-the-original-flaskpy-36o5)**
 
 | What the prompt asks | How git-afterlife answers it |
 | --- | --- |
