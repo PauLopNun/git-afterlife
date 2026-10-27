@@ -1,4 +1,4 @@
-"""Tests for git-ofrenda. They build a tiny repository with real births and deaths
+"""Tests for git-afterlife. They build a tiny repository with real births and deaths
 and replace the model with a fake medium, so no Ollama is needed."""
 
 import json
@@ -10,7 +10,7 @@ import unittest
 from unittest import mock
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-import ofrenda  # noqa: E402
+import afterlife  # noqa: E402
 
 
 def sh(repo, *args, author="Ana"):
@@ -52,18 +52,18 @@ class Graveyard(unittest.TestCase):
         cls.tmp.cleanup()
 
     def dead(self):
-        return {g["path"]: g for g in ofrenda.find_the_dead(self.repo)}
+        return {g["path"]: g for g in afterlife.find_the_dead(self.repo)}
 
     def test_resurrected_files_are_not_dead(self):
         self.assertNotIn("phoenix.py", self.dead())
 
     def test_longest_lived_source_first_configs_last(self):
-        order = [g["path"] for g in ofrenda.find_the_dead(self.repo)]
+        order = [g["path"] for g in afterlife.find_the_dead(self.repo)]
         self.assertEqual(order[0], "app/legacy.py")
         self.assertEqual(order[-1], "requirements.txt")
 
     def test_exhume_recovers_the_whole_life(self):
-        g = ofrenda.exhume(self.repo, self.dead()["app/legacy.py"])
+        g = afterlife.exhume(self.repo, self.dead()["app/legacy.py"])
         self.assertEqual(g["commits"], 2)
         self.assertEqual(g["birth"]["subject"], "first light")
         self.assertEqual(g["death"]["subject"], "out with the old")
@@ -73,40 +73,40 @@ class Graveyard(unittest.TestCase):
         self.assertEqual(g["names"], ["parse_date", "Clock"])
 
     def test_binaries_stay_buried(self):
-        self.assertIsNone(ofrenda.exhume(self.repo, self.dead()["logo.bin"]))
+        self.assertIsNone(afterlife.exhume(self.repo, self.dead()["logo.bin"]))
 
     def test_markdown_headings_are_remembered(self):
-        self.assertEqual(ofrenda.remembered_names("notes.md", "# Old plans\n## Ideas\n"),
+        self.assertEqual(afterlife.remembered_names("notes.md", "# Old plans\n## Ideas\n"),
                          ["Old plans", "Ideas"])
-        self.assertEqual(ofrenda.remembered_names("x.py", "# a comment\nx = 1\n"), [])
+        self.assertEqual(afterlife.remembered_names("x.py", "# a comment\nx = 1\n"), [])
 
     def test_epitaph_survives_a_rambling_medium(self):
-        g = ofrenda.exhume(self.repo, self.dead()["app/legacy.py"])
+        g = afterlife.exhume(self.repo, self.dead()["app/legacy.py"])
         replies = iter(["not json at all", json.dumps({"epitaph": "Parsed all but its own.",
                                                         "last_words": "I was. Then Carlos."})])
-        with mock.patch.object(ofrenda, "ollama_chat", side_effect=lambda *a, **k: next(replies)):
-            self.assertEqual(ofrenda.write_epitaph("m", "English", g),
+        with mock.patch.object(afterlife, "ollama_chat", side_effect=lambda *a, **k: next(replies)):
+            self.assertEqual(afterlife.write_epitaph("m", "English", g),
                              ("Parsed all but its own.", "I was. Then Carlos."))
 
     def test_seance_is_told_the_true_cause_of_death(self):
-        g = ofrenda.exhume(self.repo, self.dead()["app/legacy.py"])
-        prompt = ofrenda.seance_prompt(g, "Spanish")
+        g = afterlife.exhume(self.repo, self.dead()["app/legacy.py"])
+        prompt = afterlife.seance_prompt(g, "Spanish")
         self.assertIn("Carlos deleted you", prompt)
         self.assertIn('"out with the old"', prompt)
         self.assertIn("Speak only Spanish", prompt)
 
     def test_recorded_seance_asks_in_the_chosen_language(self):
-        g = ofrenda.exhume(self.repo, self.dead()["app/legacy.py"])
-        with mock.patch.object(ofrenda, "ollama_chat", return_value=" Soy legacy.py. "):
-            transcript = ofrenda.hold_seance("m", "Spanish", g)
+        g = afterlife.exhume(self.repo, self.dead()["app/legacy.py"])
+        with mock.patch.object(afterlife, "ollama_chat", return_value=" Soy legacy.py. "):
+            transcript = afterlife.hold_seance("m", "Spanish", g)
         self.assertEqual(transcript[0], ("¿Quién eres, espíritu?", "Soy legacy.py."))
         self.assertEqual(len(transcript), 3)
 
     def test_altar_escapes_everything_it_is_told(self):
-        g = ofrenda.exhume(self.repo, self.dead()["app/legacy.py"])
+        g = afterlife.exhume(self.repo, self.dead()["app/legacy.py"])
         g.update(epitaph="<script>alert(1)</script>", last_words="a & b",
                  seance=[("<q>", "<a>")])
-        page = ofrenda.build_altar("repo", "gemma3:4b", [g])
+        page = afterlife.build_altar("repo", "gemma3:4b", [g])
         self.assertNotIn("<script>alert", page)
         self.assertIn("&lt;script&gt;", page)
         self.assertIn("a &amp; b", page)
@@ -116,8 +116,8 @@ class Graveyard(unittest.TestCase):
         out = os.path.join(self.tmp.name, "altar.html")
         args = mock.Mock(repo=self.repo, limit=10, seances=3, dry_run=True, out=out,
                          model="m", lang="English")
-        with mock.patch.object(ofrenda, "ollama_chat", side_effect=AssertionError("model called")):
-            ofrenda.summon(args)
+        with mock.patch.object(afterlife, "ollama_chat", side_effect=AssertionError("model called")):
+            afterlife.summon(args)
         with open(out) as f:
             page = f.read()
         self.assertIn("app/legacy.py", page)

@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:140b1f,50:7b4bb8,100:ff9f1c&text=git-ofrenda&fontColor=f6ead7&fontSize=64&fontAlignY=38&desc=A%20D%C3%ADa%20de%20los%20Muertos%20altar%20for%20the%20code%20your%20repository%20buried&descAlignY=60&descSize=18&animation=fadeIn" alt="git-ofrenda" width="100%">
+<img src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:140b1f,50:7b4bb8,100:ff9f1c&text=git-afterlife&fontColor=f6ead7&fontSize=64&fontAlignY=38&desc=A%20D%C3%ADa%20de%20los%20Muertos%20altar%20for%20the%20code%20your%20repository%20buried&descAlignY=60&descSize=18&animation=fadeIn" alt="git-afterlife" width="100%">
 
-[![Live ofrenda](https://img.shields.io/badge/live%20demo-the%20ofrenda-ff9f1c?style=for-the-badge&logo=githubpages&logoColor=white)](https://paulopnun.github.io/git-ofrenda/)
-[![Séance](https://img.shields.io/badge/transcript-the%20s%C3%A9ance-e84a8a?style=for-the-badge&logo=ghost&logoColor=white)](https://paulopnun.github.io/git-ofrenda/seance.txt)
-[![Raise the ofrenda](https://img.shields.io/github/actions/workflow/status/PauLopNun/git-ofrenda/ofrenda.yml?branch=main&style=for-the-badge&label=ofrenda&logo=githubactions&logoColor=white)](https://github.com/PauLopNun/git-ofrenda/actions/workflows/ofrenda.yml)
+[![Live altar](https://img.shields.io/badge/live%20demo-the%20altar-ff9f1c?style=for-the-badge&logo=githubpages&logoColor=white)](https://paulopnun.github.io/git-afterlife/)
+[![Séance](https://img.shields.io/badge/transcript-the%20s%C3%A9ance-e84a8a?style=for-the-badge&logo=ghost&logoColor=white)](https://paulopnun.github.io/git-afterlife/seance.txt)
+[![Raise the altar](https://img.shields.io/github/actions/workflow/status/PauLopNun/git-afterlife/afterlife.yml?branch=main&style=for-the-badge&label=altar&logo=githubactions&logoColor=white)](https://github.com/PauLopNun/git-afterlife/actions/workflows/afterlife.yml)
 
 ![Python](https://img.shields.io/badge/python-3.8%2B-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Ollama](https://img.shields.io/badge/runs%20on-Ollama-000000?style=flat-square&logo=ollama&logoColor=white)
@@ -20,19 +20,19 @@
 
 <br><br>
 
-<a href="https://paulopnun.github.io/git-ofrenda/"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=20&duration=3500&pause=1200&color=FF9F1C&center=true&vCenter=true&width=760&lines=Every+repository+has+a+graveyard.;flask.py+(2010-04-06+-+2010-07-02)%3A+%22out+with+the+old%22;Light+a+candle+for+the+code+you+deleted.;Your+code+never+leaves+your+machine." alt="Every repository has a graveyard."></a>
+<a href="https://paulopnun.github.io/git-afterlife/"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=20&duration=3500&pause=1200&color=FF9F1C&center=true&vCenter=true&width=760&lines=Every+repository+has+a+graveyard.;flask.py+(2010-04-06+-+2010-07-02)%3A+%22out+with+the+old%22;Light+a+candle+for+the+code+you+deleted.;Your+code+never+leaves+your+machine." alt="Every repository has a graveyard."></a>
 
 </div>
 
 <br>
 
-<p align="center"><img src="https://paulopnun.github.io/git-ofrenda/cover.png" alt="git-ofrenda: a Día de los Muertos altar for the code your repository buried" width="100%"></p>
+<p align="center"><img src="https://paulopnun.github.io/git-afterlife/cover.png" alt="git-afterlife: a Día de los Muertos altar for the code your repository buried" width="100%"></p>
 
 Every repository has a graveyard: files born in a hopeful first commit, carried
 through dozens of refactors, and finally deleted with a one-line commit message.
 Nobody remembers them.
 
-**git-ofrenda** digs them out of your git history and builds them an *ofrenda*,
+**git-afterlife** digs them out of your git history and builds them an altar, an *ofrenda*,
 the altar families raise on Día de los Muertos to welcome back the ones they
 lost. Each deleted file gets a place on the altar with its birth date, its death
 date, the people who touched it, the commit that killed it, and an epitaph with
@@ -49,13 +49,13 @@ remembers its real code, who created it, and why it was removed.
 
 </div>
 
-<p align="center"><img src="https://paulopnun.github.io/git-ofrenda/altar.png" alt="The ofrenda raised for Flask: tiers of deleted files, each with dates, epitaph, last words and cause of death" width="100%"></p>
+<p align="center"><img src="https://paulopnun.github.io/git-afterlife/altar.png" alt="The altar raised for Flask: tiers of deleted files, each with dates, epitaph, last words and cause of death" width="100%"></p>
 
-<p align="center"><img src="https://paulopnun.github.io/git-ofrenda/seance.gif" alt="A séance in the terminal with the original flask.py" width="100%"></p>
+<p align="center"><img src="https://paulopnun.github.io/git-afterlife/seance.gif" alt="A séance in the terminal with the original flask.py" width="100%"></p>
 
 ## Hall of the dead
 
-The most famous souls on the [Flask altar](https://paulopnun.github.io/git-ofrenda/), straight from its git history:
+The most famous souls on the [Flask altar](https://paulopnun.github.io/git-afterlife/), straight from its git history:
 
 | | The deceased | Lived | Commits | Killed by | Cause of death |
 | :---: | --- | --- | :---: | --- | --- |
@@ -76,16 +76,16 @@ This project was built for the **Hacktoberfest 2026 Open-Source AI Challenge,
 Week 4: _Ghost in the Machine_** on DEV, whose prompt is to build something with
 open-source AI at its core, either spooky or in the spirit of Día de los Muertos.
 
-| What the prompt asks | How git-ofrenda answers it |
+| What the prompt asks | How git-afterlife answers it |
 | --- | --- |
 | Open-source AI at the core | Every epitaph and every séance answer comes from **Gemma 3**, an open-weight model, served by **Ollama**. There is no cloud API anywhere in the code |
-| Spooky, or honoring the past | It is literally an ofrenda: it honors the files a project lost and lets you speak with their ghosts |
+| Spooky, or honoring the past | It is literally a Día de los Muertos altar: it honors the files a project lost and lets you speak with their ghosts |
 | Why open matters | See [Why local and open](#why-local-and-open) |
 
 ## Why local and open
 
 - **Your code stays home.** Source code is often the one thing you are not
-  allowed to paste into a cloud chatbot. git-ofrenda only talks to Ollama on
+  allowed to paste into a cloud chatbot. git-afterlife only talks to Ollama on
   `localhost`, so private repositories never leave the machine.
 - **It works with the lights (and the internet) off.** Once the model is pulled,
   everything runs offline.
@@ -100,19 +100,19 @@ open-source AI at its core, either spooky or in the spirit of Día de los Muerto
 # 1. Install Ollama (https://ollama.com) and pull the model
 ollama pull gemma3:4b        # or gemma3:1b on an older machine: faster, less poetic
 
-# 2. Get git-ofrenda (standard library only, nothing to pip install)
-git clone https://github.com/PauLopNun/git-ofrenda.git
-cd git-ofrenda
+# 2. Get git-afterlife (standard library only, nothing to pip install)
+git clone https://github.com/PauLopNun/git-afterlife.git
+cd git-afterlife
 
 # 3. Raise an altar for any repository
-python3 ofrenda.py summon /path/to/repo
-xdg-open ofrenda.html
+python3 afterlife.py summon /path/to/repo
+xdg-open altar.html
 ```
 
 Talk to one of the dead:
 
 ```bash
-python3 ofrenda.py seance flask.py ~/src/flask
+python3 afterlife.py seance flask.py ~/src/flask
 ```
 
 ```text
@@ -125,17 +125,17 @@ you › Why did they delete you?
      vanished with that commit. It was a strange, sudden end for a fledgling framework.
 ```
 
-*A real answer from the [demo séance](https://paulopnun.github.io/git-ofrenda/seance.txt), by Gemma 3 4B.*
+*A real answer from the [demo séance](https://paulopnun.github.io/git-afterlife/seance.txt), by Gemma 3 4B.*
 
 ## Options
 
 | Option | Default | What it does |
 | --- | --- | --- |
-| `--model` | `gemma3:4b` (or `$OFRENDA_MODEL`) | Any Ollama model |
+| `--model` | `gemma3:4b` (or `$AFTERLIFE_MODEL`) | Any Ollama model |
 | `--lang` | `English` | Language the dead speak, e.g. `--lang Spanish` |
 | `--limit` | `10` | How many souls to raise (`summon`) |
 | `--seances` | `3` | Hold a recorded séance with the first N souls and show it on the altar (`summon`) |
-| `--out` | `ofrenda.html` | Output file (`summon`) |
+| `--out` | `altar.html` | Output file (`summon`) |
 | `--dry-run` | off | Dig up the files without asking the model (`summon`) |
 
 `OLLAMA_HOST` is honored if Ollama runs on another machine.
@@ -147,7 +147,7 @@ flowchart LR
     A[git history] -->|git log --diff-filter=D| B[Deleted files<br>still dead at HEAD]
     B -->|rank by commits,<br>skip binaries and configs| C[Exhume each one:<br>birth, death, mourners,<br>last source code]
     C -->|facts as prompt| D[Gemma 3<br>via Ollama on localhost]
-    D -->|JSON: epitaph +<br>last words| E[ofrenda.html]
+    D -->|JSON: epitaph +<br>last words| E[altar.html]
     C -->|system prompt| F[Séance chat]
     D <--> F
 ```
@@ -169,31 +169,31 @@ flowchart LR
 
 ## Live demo, built by GitHub Actions
 
-The [workflow](.github/workflows/ofrenda.yml) installs Ollama on a GitHub
+The [workflow](.github/workflows/afterlife.yml) installs Ollama on a GitHub
 runner, pulls Gemma 3 4B, clones [Flask](https://github.com/pallets/flask), raises
 its altar in English and in Spanish, holds a séance with the original
 single-file `flask.py` (2010), takes screenshots with headless Chrome, records
 the séance GIF with [VHS](https://github.com/charmbracelet/vhs), and publishes
 everything to GitHub Pages:
 
-- 🌼 [The ofrenda, in English](https://paulopnun.github.io/git-ofrenda/)
-- 🌼 [The ofrenda in Spanish](https://paulopnun.github.io/git-ofrenda/es.html), raised with `--lang Spanish`
-- 👻 [The séance transcript](https://paulopnun.github.io/git-ofrenda/seance.txt)
+- 🌼 [The altar, in English](https://paulopnun.github.io/git-afterlife/)
+- 🌼 [The altar in Spanish](https://paulopnun.github.io/git-afterlife/es.html), raised with `--lang Spanish`
+- 👻 [The séance transcript](https://paulopnun.github.io/git-afterlife/seance.txt)
 
-You can run it for any public repository from **Actions → Raise the ofrenda →
+You can run it for any public repository from **Actions → Raise the altar →
 Run workflow**, choosing the repository and the model.
 
 ## Project structure
 
 ```text
-git-ofrenda/
-├── ofrenda.py                     # the whole tool: git archaeology, Ollama client, altar renderer, séance
+git-afterlife/
+├── afterlife.py                     # the whole tool: git archaeology, Ollama client, altar renderer, séance
 ├── tests/
-│   └── test_ofrenda.py            # builds a tiny graveyard and checks every step, with a fake model
+│   └── test_afterlife.py            # builds a tiny graveyard and checks every step, with a fake model
 ├── docs/
 │   ├── cover.html                 # source of the cover image
 │   └── seance.tape                # VHS script that records the séance GIF
-├── .github/workflows/ofrenda.yml  # tests, then builds the live demo with Gemma and deploys it to Pages
+├── .github/workflows/afterlife.yml  # tests, then builds the live demo with Gemma and deploys it to Pages
 ├── README.md
 └── LICENSE
 ```

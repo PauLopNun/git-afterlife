@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""git-ofrenda: a Día de los Muertos altar for the code your repository buried.
+"""git-afterlife: a Día de los Muertos altar for the code your repository buried.
 
 Digs deleted files out of git history and asks a local open-weight model
 (via Ollama) to write each one an epitaph and its last words. Your code
 never leaves your machine.
 
 Usage:
-    ofrenda.py summon [REPO] [--limit N] [--seances N] [--out FILE] [--model M] [--lang L]
-    ofrenda.py seance PATH [REPO] [--model M] [--lang L]
+    afterlife.py summon [REPO] [--limit N] [--seances N] [--out FILE] [--model M] [--lang L]
+    afterlife.py seance PATH [REPO] [--model M] [--lang L]
 """
 
 import argparse
@@ -26,7 +26,7 @@ import urllib.request
 OLLAMA_URL = os.environ.get("OLLAMA_HOST", "http://localhost:11434").rstrip("/")
 if not OLLAMA_URL.startswith("http"):
     OLLAMA_URL = "http://" + OLLAMA_URL
-DEFAULT_MODEL = os.environ.get("OFRENDA_MODEL", "gemma3:4b")
+DEFAULT_MODEL = os.environ.get("AFTERLIFE_MODEL", "gemma3:4b")
 MAX_CODE_CHARS = 2500
 SEP = "\x1f"
 
@@ -139,7 +139,7 @@ CLICHES = "digital dust, echoes, void, silent plea, forgotten dream, shadow, whi
 
 def write_epitaph(model, lang, ghost):
     prompt = (
-        "You write epitaphs for a Día de los Muertos ofrenda honoring source code "
+        "You write epitaphs for a Día de los Muertos altar honoring source code "
         "files deleted from a git repository. Tone: tender, wry, a little eerie, like "
         "a calavera literaria. Be specific: name at least one real thing from the "
         "file (a function, class, section or setting) and allude to the real commit "
@@ -204,7 +204,7 @@ def hold_seance(model, lang, ghost):
 PAGE = """<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ofrenda for {repo}</title>
+<title>In loving memory: {repo}</title>
 <style>
 :root {{ --night:#140b1f; --marigold:#ff9f1c; --rose:#e84a8a; --bone:#f6ead7; --violet:#7b4bb8; }}
 * {{ box-sizing:border-box; }}
@@ -250,13 +250,13 @@ footer {{ text-align:center; padding:0 16px 40px; opacity:.6; font-size:.8rem; }
 </style></head><body>
 <div class="picado">{picado}</div>
 <header>
-<h1>Ofrenda</h1>
+<h1>In Loving Memory</h1>
 <p>for the files of <strong>{repo}</strong> that are no longer with us.<br>
 Their epitaphs were written by <code>{model}</code>, running locally. No code left this machine.</p>
 <div class="stats">{count} souls &middot; {lines} lines of code remembered &middot; raised {today}</div>
 </header>
 <main class="altar">{tiers}</main>
-<footer>Made with git-ofrenda &middot; open-weight models &middot; Día de los Muertos {year}</footer>
+<footer>Made with git-afterlife &middot; open-weight models &middot; Día de los Muertos {year}</footer>
 {petals}
 </body></html>"""
 
@@ -290,7 +290,7 @@ def build_altar(repo_name, model, ghosts):
         epitaph=e(g["epitaph"]), words=e(g["last_words"]),
         cause=e(g["death"]["subject"]), killer=e(g["death"]["author"]),
         sha=g["death"]["sha"][:7], code=e(g["code"])) for g in ghosts]
-    # an ofrenda has tiers: fewest at the top, widest at the bottom
+    # a Día de los Muertos altar has tiers: fewest at the top, widest at the bottom
     tiers, i, size = [], 0, 1
     while i < len(cards):
         tiers.append('<section class="tier">' + "".join(cards[i:i + size]) + "</section>")
@@ -338,7 +338,7 @@ def summon(args):
                 g["seance"] = hold_seance(args.model, args.lang, g)
     with open(args.out, "w", encoding="utf-8") as f:
         f.write(build_altar(repo_name(args.repo), args.model, ghosts))
-    print(f"The ofrenda is ready: {args.out}", file=sys.stderr)
+    print(f"The altar is ready: {args.out}", file=sys.stderr)
 
 
 def seance(args):
@@ -385,7 +385,7 @@ def main():
             s.add_argument("--limit", type=int, default=10, help="how many souls to raise (default: 10)")
             s.add_argument("--seances", type=int, default=3,
                            help="hold a recorded séance with the first N souls (default: 3)")
-            s.add_argument("--out", default="ofrenda.html", help="output HTML file")
+            s.add_argument("--out", default="altar.html", help="output HTML file")
             s.add_argument("--dry-run", action="store_true", help="skip the model, just dig up the files")
     args = p.parse_args()
     try:

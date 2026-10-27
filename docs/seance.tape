@@ -12,7 +12,7 @@ Set Theme "Catppuccin Mocha"
 Set TypingSpeed 45ms
 Set PlaybackSpeed 2.5
 
-Type "python3 ofrenda.py seance flask.py graveyard"
+Type "python3 afterlife.py seance flask.py graveyard"
 Sleep 400ms
 Enter
 Wait@60s /you ›\s*$/
