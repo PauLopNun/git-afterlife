@@ -1,84 +1,173 @@
-# git-ofrenda 🕯️🌼
+<div align="center">
 
-**A Día de los Muertos altar for the code your repository buried.**
+<img src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:140b1f,50:7b4bb8,100:ff9f1c&text=git-ofrenda&fontColor=f6ead7&fontSize=64&fontAlignY=38&desc=A%20D%C3%ADa%20de%20los%20Muertos%20altar%20for%20the%20code%20your%20repository%20buried&descAlignY=60&descSize=18&animation=fadeIn" alt="git-ofrenda" width="100%">
 
-Every repository has a graveyard. Files that were born in a hopeful first commit,
-lived through dozens of refactors, and were finally deleted with a one-line
-commit message. `git-ofrenda` digs them out of your git history and builds them
-an *ofrenda*: an altar with papel picado, candles and marigold petals, where each
-deleted file gets an epitaph and its last words, written by an open-weight
-model running **on your own machine**.
+[![Live ofrenda](https://img.shields.io/badge/live%20demo-the%20ofrenda-ff9f1c?style=for-the-badge&logo=githubpages&logoColor=white)](https://paulopnun.github.io/git-ofrenda/)
+[![Séance](https://img.shields.io/badge/transcript-the%20s%C3%A9ance-e84a8a?style=for-the-badge&logo=ghost&logoColor=white)](https://paulopnun.github.io/git-ofrenda/seance.txt)
+[![Raise the ofrenda](https://img.shields.io/github/actions/workflow/status/PauLopNun/git-ofrenda/ofrenda.yml?branch=main&style=for-the-badge&label=ofrenda&logo=githubactions&logoColor=white)](https://github.com/PauLopNun/git-ofrenda/actions/workflows/ofrenda.yml)
+
+![Python](https://img.shields.io/badge/python-3.8%2B-3776AB?style=flat-square&logo=python&logoColor=white)
+![Ollama](https://img.shields.io/badge/runs%20on-Ollama-000000?style=flat-square&logo=ollama&logoColor=white)
+![Gemma](https://img.shields.io/badge/model-Gemma%203-4285F4?style=flat-square&logo=google&logoColor=white)
+![Dependencies](https://img.shields.io/badge/dependencies-0-2ec4b6?style=flat-square)
+![Offline](https://img.shields.io/badge/works-offline-7b4bb8?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-ffd23f?style=flat-square)
+[![Hacktoberfest 2026](https://img.shields.io/badge/Hacktoberfest%202026-Ghost%20in%20the%20Machine-ff6b35?style=flat-square&logo=devdotto&logoColor=white)](https://dev.to/challenges)
+
+<br>
+
+<img src="https://skillicons.dev/icons?i=python,git,github,githubactions,html,css,linux&theme=dark" alt="Python, Git, GitHub, GitHub Actions, HTML, CSS, Linux">
+
+</div>
+
+<br>
+
+Every repository has a graveyard: files born in a hopeful first commit, carried
+through dozens of refactors, and finally deleted with a one-line commit message.
+Nobody remembers them.
+
+**git-ofrenda** digs them out of your git history and builds them an *ofrenda*,
+the altar families raise on Día de los Muertos to welcome back the ones they
+lost. Each deleted file gets a place on the altar with its birth date, its death
+date, the people who touched it, the commit that killed it, and an epitaph with
+its last words, written by an **open-weight model running on your own machine**.
 
 You can also hold a **séance** and talk to the ghost of a deleted file. It
-remembers its real code, who created it, and the commit that killed it.
+remembers its real code, who created it, and why it was removed.
 
-```
-$ python3 ofrenda.py seance flask.py ~/src/flask
-🕯️  The candles flicker. The spirit of flask.py (2010-04-06 – 2010-07-02) is listening.
+<div align="center">
 
-you › why did they delete you?
-👻 › ...
-```
+| `summon` | `seance` |
+| :---: | :---: |
+| Builds a self-contained HTML altar with papel picado, flickering candles and falling marigold petals | Opens a conversation with one dead file, which answers in first person from its real code and history |
+
+</div>
+
+## The challenge
+
+<div align="center">
+
+![DEV Challenge](https://img.shields.io/badge/DEV%20Challenge-Hacktoberfest%20Open--Source%20AI%20%C2%B7%20Week%204-0a0a0a?style=for-the-badge&logo=devdotto&logoColor=white)
+
+</div>
+
+This project was built for the **Hacktoberfest 2026 Open-Source AI Challenge,
+Week 4: _Ghost in the Machine_** on DEV, whose prompt is to build something with
+open-source AI at its core, either spooky or in the spirit of Día de los Muertos.
+
+| What the prompt asks | How git-ofrenda answers it |
+| --- | --- |
+| Open-source AI at the core | Every epitaph and every séance answer comes from **Gemma 3**, an open-weight model, served by **Ollama**. There is no cloud API anywhere in the code |
+| Spooky, or honoring the past | It is literally an ofrenda: it honors the files a project lost and lets you speak with their ghosts |
+| Why open matters | See [Why local and open](#why-local-and-open) |
 
 ## Why local and open
 
-Your source code is often the one thing you are *not allowed* to paste into a
-cloud chatbot. `git-ofrenda` talks only to [Ollama](https://ollama.com) on
-`localhost`, so private and proprietary repositories never leave the machine.
-It works offline, costs nothing to run, and any open-weight model can be
-swapped in with `--model`.
+- **Your code stays home.** Source code is often the one thing you are not
+  allowed to paste into a cloud chatbot. git-ofrenda only talks to Ollama on
+  `localhost`, so private repositories never leave the machine.
+- **It works with the lights (and the internet) off.** Once the model is pulled,
+  everything runs offline.
+- **It costs nothing to run.** Gemma 3 1B runs on a laptop CPU, and a whole
+  altar is generated for free inside a standard GitHub Actions runner.
+- **Swap the medium.** Any Ollama model works with `--model`, from a 1B model on
+  a laptop to a large one on a GPU.
 
-## Requirements
-
-- Python 3.8+ (standard library only, nothing to `pip install`)
-- git
-- [Ollama](https://ollama.com) with a model pulled, by default
-  [Gemma 3](https://ollama.com/library/gemma3) 1B, which runs fine on a laptop CPU:
+## Quick start
 
 ```bash
+# 1. Install Ollama (https://ollama.com) and pull the model
 ollama pull gemma3:1b
-```
 
-## Usage
+# 2. Get git-ofrenda (standard library only, nothing to pip install)
+git clone https://github.com/PauLopNun/git-ofrenda.git
+cd git-ofrenda
 
-Build the altar (writes `ofrenda.html`):
-
-```bash
+# 3. Raise an altar for any repository
 python3 ofrenda.py summon /path/to/repo
-python3 ofrenda.py summon /path/to/repo --limit 15 --model gemma3:4b --out altar.html
-python3 ofrenda.py summon /path/to/repo --lang Spanish      # que los muertos hablen español
+xdg-open ofrenda.html
 ```
 
 Talk to one of the dead:
 
 ```bash
-python3 ofrenda.py seance path/of/deleted/file.py /path/to/repo
+python3 ofrenda.py seance flask.py ~/src/flask
 ```
+
+```text
+🕯️  The candles flicker. The spirit of flask.py (2010-04-06 – 2010-07-02) is listening.
+   Ask your questions. Type 'adiós' to let it rest.
+
+you › why did they delete you?
+👻 › ...
+```
+
+## Options
 
 | Option | Default | What it does |
 | --- | --- | --- |
 | `--model` | `gemma3:1b` (or `$OFRENDA_MODEL`) | Any Ollama model |
-| `--lang` | `English` | Language the dead speak |
+| `--lang` | `English` | Language the dead speak (`--lang Spanish`: que los muertos hablen español) |
 | `--limit` | `10` | How many souls to raise (`summon`) |
 | `--out` | `ofrenda.html` | Output file (`summon`) |
 | `--dry-run` | off | Dig up the files without asking the model (`summon`) |
 
-`OLLAMA_HOST` is honored if Ollama runs somewhere else.
+`OLLAMA_HOST` is honored if Ollama runs on another machine.
 
 ## How it works
 
+```mermaid
+flowchart LR
+    A[git history] -->|git log --diff-filter=D| B[Deleted files<br>still dead at HEAD]
+    B -->|rank by commits,<br>skip binaries and configs| C[Exhume each one:<br>birth, death, mourners,<br>last source code]
+    C -->|facts as prompt| D[Gemma 3<br>via Ollama on localhost]
+    D -->|JSON: epitaph +<br>last words| E[ofrenda.html]
+    C -->|system prompt| F[Séance chat]
+    D <--> F
+```
+
 1. `git log --diff-filter=D` lists every file ever deleted. Files that came back
    to life at `HEAD` are skipped, and so are binaries.
-2. The longest-lived source files are raised first (most commits touching them),
-   with config and lock files left to rest.
+2. The longest-lived source files are raised first, measured by how many commits
+   touched them. Lock and config files are left to rest.
 3. For each one it recovers its birth commit, its death commit, everyone who
    touched it, and its last known source (`git show <death>^:<path>`).
-4. The facts go to the local model, which answers in JSON with an epitaph and the
-   file's last words. The cause of death is never invented: it is the real
-   commit message.
-5. Everything is rendered into a single self-contained HTML page, with no
-   external requests.
+4. Those facts go to the local model, which answers in JSON with an epitaph and
+   the file's last words. **The cause of death is never invented**: it is the
+   real commit message that deleted the file.
+5. Everything is rendered into one self-contained HTML page with no external
+   requests.
+
+## Live demo, built by GitHub Actions
+
+The [workflow](.github/workflows/ofrenda.yml) installs Ollama on a GitHub
+runner, pulls Gemma 3, clones [Flask](https://github.com/pallets/flask), raises
+its altar in English and in Spanish, holds a séance with the original
+single-file `flask.py` (2010), and publishes everything to GitHub Pages:
+
+- 🌼 [The ofrenda, in English](https://paulopnun.github.io/git-ofrenda/)
+- 🌼 [La ofrenda, en español](https://paulopnun.github.io/git-ofrenda/es.html)
+- 👻 [The séance transcript](https://paulopnun.github.io/git-ofrenda/seance.txt)
+
+You can run it for any public repository from **Actions → Raise the ofrenda →
+Run workflow**, choosing the repository and the model.
+
+## Project structure
+
+```text
+git-ofrenda/
+├── ofrenda.py                     # the whole tool: git archaeology, Ollama client, altar renderer, séance
+├── .github/workflows/ofrenda.yml  # builds the live demo with Gemma and deploys it to Pages
+├── README.md
+└── LICENSE
+```
 
 ## License
 
-MIT
+[MIT](LICENSE) © 2026 Pau López Núñez
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&height=120&color=0:ff9f1c,50:7b4bb8,100:140b1f&section=footer" alt="" width="100%">
+
+</div>
