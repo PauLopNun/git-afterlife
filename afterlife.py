@@ -178,20 +178,15 @@ def seance_prompt(ghost, lang):
         f"say that memory did not survive the grave. Speak only {lang}.")
 
 
-SEANCE_QUESTIONS = {
-    "english": ["Who are you, spirit?", "Why did they delete you?",
-                "What would you tell the developers who came after you?"],
-    "spanish": ["¿Quién eres, espíritu?", "¿Por qué te borraron?",
-                "¿Qué les dirías a los desarrolladores que vinieron después?"],
-}
+SEANCE_QUESTIONS = ["Who are you, spirit?", "Why did they delete you?",
+                    "What would you tell the developers who came after you?"]
 
 
 def hold_seance(model, lang, ghost):
     """A short séance with fixed questions, recorded for the altar."""
-    questions = SEANCE_QUESTIONS.get(lang.lower(), SEANCE_QUESTIONS["english"])
     messages = [{"role": "system", "content": seance_prompt(ghost, lang)}]
     transcript = []
-    for q in questions:
+    for q in SEANCE_QUESTIONS:
         messages.append({"role": "user", "content": q})
         answer = ollama_chat(model, messages).strip()
         messages.append({"role": "assistant", "content": answer})
@@ -348,17 +343,17 @@ def seance(args):
     messages = [{"role": "system", "content": seance_prompt(ghost, args.lang)}]
     print(f"🕯️  The candles flicker. The spirit of {ghost['path']} "
           f"({ghost['birth']['date']} – {ghost['death']['date']}) is listening.")
-    print("   Ask your questions. Type 'adiós' to let it rest.\n")
+    print("   Ask your questions. Type 'bye' to let it rest.\n")
     while True:
         try:
             question = input("you › ").strip()
         except (EOFError, KeyboardInterrupt):
-            question = "adiós"
+            question = "bye"
         if not sys.stdin.isatty():
             print(question)
         if not question:
             continue
-        if question.lower() in {"adiós", "adios", "bye", "exit", "quit"}:
+        if question.lower() in {"bye", "goodbye", "exit", "quit"}:
             print("👻 ...and the spirit returns to the commit log.")
             return
         messages.append({"role": "user", "content": question})

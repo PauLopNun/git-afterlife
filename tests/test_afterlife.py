@@ -90,17 +90,24 @@ class Graveyard(unittest.TestCase):
 
     def test_seance_is_told_the_true_cause_of_death(self):
         g = afterlife.exhume(self.repo, self.dead()["app/legacy.py"])
-        prompt = afterlife.seance_prompt(g, "Spanish")
+        prompt = afterlife.seance_prompt(g, "French")
         self.assertIn("Carlos deleted you", prompt)
         self.assertIn('"out with the old"', prompt)
-        self.assertIn("Speak only Spanish", prompt)
+        self.assertIn("Speak only French", prompt)
 
-    def test_recorded_seance_asks_in_the_chosen_language(self):
+    def test_recorded_seance_keeps_the_whole_conversation(self):
         g = afterlife.exhume(self.repo, self.dead()["app/legacy.py"])
-        with mock.patch.object(afterlife, "ollama_chat", return_value=" Soy legacy.py. "):
-            transcript = afterlife.hold_seance("m", "Spanish", g)
-        self.assertEqual(transcript[0], ("¿Quién eres, espíritu?", "Soy legacy.py."))
+        seen = []
+
+        def medium(model, messages, **kwargs):
+            seen.append(len(messages))
+            return " I am legacy.py. "
+
+        with mock.patch.object(afterlife, "ollama_chat", side_effect=medium):
+            transcript = afterlife.hold_seance("m", "English", g)
+        self.assertEqual(transcript[0], ("Who are you, spirit?", "I am legacy.py."))
         self.assertEqual(len(transcript), 3)
+        self.assertEqual(seen, [2, 4, 6])  # each question carries the séance so far
 
     def test_altar_escapes_everything_it_is_told(self):
         g = afterlife.exhume(self.repo, self.dead()["app/legacy.py"])

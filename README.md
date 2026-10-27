@@ -117,7 +117,7 @@ python3 afterlife.py seance flask.py ~/src/flask
 
 ```text
 🕯️  The candles flicker. The spirit of flask.py (2010-04-06 – 2010-07-02) is listening.
-   Ask your questions. Type 'adiós' to let it rest.
+   Ask your questions. Type 'bye' to let it rest.
 
 you › Why did they delete you?
 👻 › It was Justin Quick, you see. A single commit, a dismissive message: "out with
@@ -132,7 +132,7 @@ you › Why did they delete you?
 | Option | Default | What it does |
 | --- | --- | --- |
 | `--model` | `gemma3:4b` (or `$AFTERLIFE_MODEL`) | Any Ollama model |
-| `--lang` | `English` | Language the dead speak, e.g. `--lang Spanish` |
+| `--lang` | `English` | Language the dead speak, e.g. `--lang French` |
 | `--limit` | `10` | How many souls to raise (`summon`) |
 | `--seances` | `3` | Hold a recorded séance with the first N souls and show it on the altar (`summon`) |
 | `--out` | `altar.html` | Output file (`summon`) |
@@ -171,13 +171,12 @@ flowchart LR
 
 The [workflow](.github/workflows/afterlife.yml) installs Ollama on a GitHub
 runner, pulls Gemma 3 4B, clones [Flask](https://github.com/pallets/flask), raises
-its altar in English and in Spanish, holds a séance with the original
+its altar, holds a séance with the original
 single-file `flask.py` (2010), takes screenshots with headless Chrome, records
 the séance GIF with [VHS](https://github.com/charmbracelet/vhs), and publishes
 everything to GitHub Pages:
 
-- 🌼 [The altar, in English](https://paulopnun.github.io/git-afterlife/)
-- 🌼 [The altar in Spanish](https://paulopnun.github.io/git-afterlife/es.html), raised with `--lang Spanish`
+- 🌼 [The altar](https://paulopnun.github.io/git-afterlife/)
 - 👻 [The séance transcript](https://paulopnun.github.io/git-afterlife/seance.txt)
 
 You can run it for any public repository from **Actions → Raise the altar →

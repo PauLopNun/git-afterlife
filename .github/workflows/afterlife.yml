@@ -54,11 +54,10 @@ jobs:
       - name: Dig up the repository
         run: git clone --quiet --filter=blob:none "$REPO" graveyard
 
-      - name: Build the altars
+      - name: Build the altar
         run: |
           mkdir site
           python3 afterlife.py summon graveyard --model "$MODEL" --out site/index.html
-          python3 afterlife.py summon graveyard --model "$MODEL" --lang Spanish --out site/es.html
 
       - name: Hold a séance with the original flask.py
         if: env.REPO == 'https://github.com/pallets/flask.git'
@@ -68,7 +67,7 @@ jobs:
             "What did you do when you were alive?" \
             "Why did they delete you?" \
             "Do you have a message for the developers who use Flask today?" \
-            "adiós" \
+            "bye" \
             | python3 afterlife.py seance flask.py graveyard --model "$MODEL" | tee site/seance.txt
 
       - name: Take the portraits
@@ -77,7 +76,6 @@ jobs:
                      --window-size="$1" --screenshot="$2" "file://$PWD/$3"; }
           shot 1000,420 site/cover.png docs/cover.html
           shot 1280,1500 site/altar.png site/index.html
-          shot 1280,1500 site/altar-es.png site/es.html
 
       - name: Record the séance as a GIF
         if: env.REPO == 'https://github.com/pallets/flask.git'
