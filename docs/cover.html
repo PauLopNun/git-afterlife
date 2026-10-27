@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>git-ofrenda cover</title>
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1000px; height: 420px; overflow: hidden; }
+body { background: radial-gradient(ellipse at 50% 0%, #3a1d55, #140b1f 70%); color: #f6ead7;
+  font-family: Georgia, 'Times New Roman', serif; position: relative; }
+.picado { display: flex; justify-content: center; gap: 4px; }
+.picado span { width: 62px; height: 70px; opacity: .92;
+  clip-path: polygon(0 0,100% 0,100% 80%,85% 100%,70% 80%,50% 100%,30% 80%,15% 100%,0 80%);
+  -webkit-mask: radial-gradient(circle at 50% 40%, transparent 9px, #000 10px); }
+.picado span:nth-child(5n+1) { background: #ff9f1c; } .picado span:nth-child(5n+2) { background: #e84a8a; }
+.picado span:nth-child(5n+3) { background: #7b4bb8; } .picado span:nth-child(5n+4) { background: #2ec4b6; }
+.picado span:nth-child(5n) { background: #ffd23f; }
+main { text-align: center; padding-top: 34px; }
+h1 { margin: 0; font-size: 92px; color: #ff9f1c; text-shadow: 0 0 30px #ff9f1c99; letter-spacing: .02em; }
+h1 small { color: #f6ead7; opacity: .55; font-size: 60px; font-family: ui-monospace, monospace; }
+p { margin: 10px 0 0; font-size: 27px; font-style: italic; }
+.tag { margin-top: 26px; display: inline-flex; gap: 14px; font-family: ui-monospace, monospace; font-size: 17px; }
+.tag span { border: 1px solid #ff9f1c88; border-radius: 999px; padding: 6px 14px; background: #ffffff0d; }
+.candle { position: absolute; bottom: 0; width: 22px; background: #f6ead7; border-radius: 3px 3px 0 0; }
+.candle::before { content: ""; position: absolute; top: -26px; left: 3px; width: 16px; height: 26px; border-radius: 50% 50% 40% 40%;
+  background: radial-gradient(#fff6c2, #ff9f1c 60%, transparent 72%); filter: drop-shadow(0 0 12px #ff9f1c); }
+.petal { position: absolute; width: 16px; height: 16px; background: #ff9f1c; border-radius: 60% 0 60% 0; opacity: .8; }
+</style></head><body>
+<div class="picado"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+<main>
+  <h1><small>git-</small>ofrenda</h1>
+  <p>A Día de los Muertos altar for the code your repository buried</p>
+  <div class="tag"><span>💀 git log --diff-filter=D</span><span>🕯️ Gemma 3, running locally</span><span>👻 séances with deleted files</span></div>
+</main>
+<div class="candle" style="left:60px;height:90px"></div><div class="candle" style="left:100px;height:60px"></div>
+<div class="candle" style="right:60px;height:90px"></div><div class="candle" style="right:100px;height:60px"></div>
+<div class="petal" style="left:180px;top:120px;transform:rotate(20deg)"></div>
+<div class="petal" style="left:820px;top:150px;transform:rotate(-30deg)"></div>
+<div class="petal" style="left:240px;top:330px;transform:rotate(70deg)"></div>
+<div class="petal" style="left:760px;top:350px;transform:rotate(10deg)"></div>
+<div class="petal" style="left:140px;top:250px;transform:rotate(-60deg);background:#e84a8a"></div>
+<div class="petal" style="left:870px;top:260px;transform:rotate(40deg);background:#e84a8a"></div>
+</body></html>

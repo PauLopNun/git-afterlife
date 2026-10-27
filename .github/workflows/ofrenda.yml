@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths-ignore: ['**.md', 'LICENSE']
+  pull_request:
   workflow_dispatch:
     inputs:
       repo:
@@ -19,11 +20,20 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run the tests
+        run: python3 -m unittest discover -s tests -v
+
   summon:
+    needs: test
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     env:
       REPO: ${{ inputs.repo || 'https://github.com/pallets/flask.git' }}
@@ -31,8 +41,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Install Ollama
+      - name: Install Ollama and emoji fonts
         run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-color-emoji > /dev/null
           curl -fsSL https://ollama.com/install.sh | sh
           curl -sf http://localhost:11434/api/version || (ollama serve > /tmp/ollama.log 2>&1 &)
           for i in $(seq 30); do curl -sf http://localhost:11434/api/version && break; sleep 1; done
@@ -43,11 +54,11 @@ jobs:
       - name: Dig up the repository
         run: git clone --quiet --filter=blob:none "$REPO" graveyard
 
-      - name: Build the altar
+      - name: Build the altars
         run: |
           mkdir site
-          python3 ofrenda.py summon graveyard --model "$MODEL" --limit 10 --out site/index.html
-          python3 ofrenda.py summon graveyard --model "$MODEL" --limit 10 --lang Spanish --out site/es.html
+          python3 ofrenda.py summon graveyard --model "$MODEL" --out site/index.html
+          python3 ofrenda.py summon graveyard --model "$MODEL" --lang Spanish --out site/es.html
 
       - name: Hold a séance with the original flask.py
         if: env.REPO == 'https://github.com/pallets/flask.git'
@@ -59,6 +70,21 @@ jobs:
             "Do you have a message for the developers who use Flask today?" \
             "adiós" \
             | python3 ofrenda.py seance flask.py graveyard --model "$MODEL" | tee site/seance.txt
+
+      - name: Take the portraits
+        run: |
+          shot() { google-chrome --headless=new --disable-gpu --hide-scrollbars --virtual-time-budget=4000 \
+                     --window-size="$1" --screenshot="$2" "file://$PWD/$3"; }
+          shot 1000,420 site/cover.png docs/cover.html
+          shot 1280,1500 site/altar.png site/index.html
+          shot 1280,1500 site/altar-es.png site/es.html
+
+      - name: Record the séance as a GIF
+        if: env.REPO == 'https://github.com/pallets/flask.git'
+        continue-on-error: true
+        uses: charmbracelet/vhs-action@v2
+        with:
+          path: docs/seance.tape
 
       - uses: actions/upload-pages-artifact@v4
         with:

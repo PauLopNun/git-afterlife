@@ -22,6 +22,8 @@
 
 <br>
 
+<p align="center"><img src="https://paulopnun.github.io/git-ofrenda/cover.png" alt="git-ofrenda: a Día de los Muertos altar for the code your repository buried" width="100%"></p>
+
 Every repository has a graveyard: files born in a hopeful first commit, carried
 through dozens of refactors, and finally deleted with a one-line commit message.
 Nobody remembers them.
@@ -39,9 +41,13 @@ remembers its real code, who created it, and why it was removed.
 
 | `summon` | `seance` |
 | :---: | :---: |
-| Builds a self-contained HTML altar with papel picado, flickering candles and falling marigold petals | Opens a conversation with one dead file, which answers in first person from its real code and history |
+| Builds a self-contained HTML altar with papel picado, flickering candles, falling marigold petals and recorded séances | Opens a conversation with one dead file, which answers in first person from its real code and history |
 
 </div>
+
+<p align="center"><img src="https://paulopnun.github.io/git-ofrenda/altar.png" alt="The ofrenda raised for Flask: tiers of deleted files, each with dates, epitaph, last words and cause of death" width="100%"></p>
+
+<p align="center"><img src="https://paulopnun.github.io/git-ofrenda/seance.gif" alt="A séance in the terminal with the original flask.py" width="100%"></p>
 
 ## The challenge
 
@@ -68,7 +74,7 @@ open-source AI at its core, either spooky or in the spirit of Día de los Muerto
   `localhost`, so private repositories never leave the machine.
 - **It works with the lights (and the internet) off.** Once the model is pulled,
   everything runs offline.
-- **It costs nothing to run.** Gemma 3 1B runs on a laptop CPU, and a whole
+- **It costs nothing to run.** Gemma 3 4B runs on a laptop CPU, and a whole
   altar is generated for free inside a standard GitHub Actions runner.
 - **Swap the medium.** Any Ollama model works with `--model`, from a 1B model on
   a laptop to a large one on a GPU.
@@ -77,7 +83,7 @@ open-source AI at its core, either spooky or in the spirit of Día de los Muerto
 
 ```bash
 # 1. Install Ollama (https://ollama.com) and pull the model
-ollama pull gemma3:1b
+ollama pull gemma3:4b        # or gemma3:1b on an older machine: faster, less poetic
 
 # 2. Get git-ofrenda (standard library only, nothing to pip install)
 git clone https://github.com/PauLopNun/git-ofrenda.git
@@ -110,9 +116,10 @@ you › Why did they delete you?
 
 | Option | Default | What it does |
 | --- | --- | --- |
-| `--model` | `gemma3:1b` (or `$OFRENDA_MODEL`) | Any Ollama model |
-| `--lang` | `English` | Language the dead speak (`--lang Spanish`: que los muertos hablen español) |
+| `--model` | `gemma3:4b` (or `$OFRENDA_MODEL`) | Any Ollama model |
+| `--lang` | `English` | Language the dead speak, e.g. `--lang Spanish` |
 | `--limit` | `10` | How many souls to raise (`summon`) |
+| `--seances` | `3` | Hold a recorded séance with the first N souls and show it on the altar (`summon`) |
 | `--out` | `ofrenda.html` | Output file (`summon`) |
 | `--dry-run` | off | Dig up the files without asking the model (`summon`) |
 
@@ -139,7 +146,10 @@ flowchart LR
 4. Those facts go to the local model, which answers in JSON with an epitaph and
    the file's last words. **The cause of death is never invented**: it is the
    real commit message that deleted the file.
-5. Everything is rendered into one self-contained HTML page with no external
+5. The first few souls are also interviewed in a short séance, using the same
+   grounded prompt as the interactive `seance` command, and the conversation is
+   shown on their card.
+6. Everything is rendered into one self-contained HTML page with no external
    requests.
 
 ## Live demo, built by GitHub Actions
@@ -147,7 +157,9 @@ flowchart LR
 The [workflow](.github/workflows/ofrenda.yml) installs Ollama on a GitHub
 runner, pulls Gemma 3 4B, clones [Flask](https://github.com/pallets/flask), raises
 its altar in English and in Spanish, holds a séance with the original
-single-file `flask.py` (2010), and publishes everything to GitHub Pages:
+single-file `flask.py` (2010), takes screenshots with headless Chrome, records
+the séance GIF with [VHS](https://github.com/charmbracelet/vhs), and publishes
+everything to GitHub Pages:
 
 - 🌼 [The ofrenda, in English](https://paulopnun.github.io/git-ofrenda/)
 - 🌼 [La ofrenda, en español](https://paulopnun.github.io/git-ofrenda/es.html)
@@ -161,10 +173,26 @@ Run workflow**, choosing the repository and the model.
 ```text
 git-ofrenda/
 ├── ofrenda.py                     # the whole tool: git archaeology, Ollama client, altar renderer, séance
-├── .github/workflows/ofrenda.yml  # builds the live demo with Gemma and deploys it to Pages
+├── tests/
+│   └── test_ofrenda.py            # builds a tiny graveyard and checks every step, with a fake model
+├── docs/
+│   ├── cover.html                 # source of the cover image
+│   └── seance.tape                # VHS script that records the séance GIF
+├── .github/workflows/ofrenda.yml  # tests, then builds the live demo with Gemma and deploys it to Pages
 ├── README.md
 └── LICENSE
 ```
+
+## Tests
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+The tests create a real git repository with births, deaths, a binary and a file
+that comes back to life, and replace the model with a fake medium, so they run
+in a fraction of a second without Ollama. They run on every push before the demo
+is built.
 
 ## License
 

@@ -6,7 +6,7 @@ Digs deleted files out of git history and asks a local open-weight model
 never leaves your machine.
 
 Usage:
-    ofrenda.py summon [REPO] [--limit N] [--out FILE] [--model M] [--lang L]
+    ofrenda.py summon [REPO] [--limit N] [--seances N] [--out FILE] [--model M] [--lang L]
     ofrenda.py seance PATH [REPO] [--model M] [--lang L]
 """
 
@@ -26,7 +26,7 @@ import urllib.request
 OLLAMA_URL = os.environ.get("OLLAMA_HOST", "http://localhost:11434").rstrip("/")
 if not OLLAMA_URL.startswith("http"):
     OLLAMA_URL = "http://" + OLLAMA_URL
-DEFAULT_MODEL = os.environ.get("OFRENDA_MODEL", "gemma3:1b")
+DEFAULT_MODEL = os.environ.get("OFRENDA_MODEL", "gemma3:4b")
 MAX_CODE_CHARS = 2500
 SEP = "\x1f"
 
@@ -164,6 +164,41 @@ def write_epitaph(model, lang, ghost):
     return "Here lies code that did its job.", "I was. Then I was refactored."
 
 
+def seance_prompt(ghost, lang):
+    return (
+        "You are the ghost of a source code file that was deleted from a git repository. "
+        f"These are the true facts of your life:\n\n{describe(ghost)}\n\n"
+        "Speak in first person as this file, from beyond the grave, during a Día de los "
+        "Muertos séance. Be eerie, warm and a bit dramatic, but keep answers short "
+        "(under 80 words). Ground everything in your real code and commit history: "
+        "mention your real functions and the people who wrote you by name. If asked "
+        f"why you died, the truth is that {ghost['death']['author']} deleted you in a "
+        f"commit whose message was \"{ghost['death']['subject']}\"; quote it, never "
+        "invent bugs or other reasons. If asked something these facts don't cover, "
+        f"say that memory did not survive the grave. Speak only {lang}.")
+
+
+SEANCE_QUESTIONS = {
+    "english": ["Who are you, spirit?", "Why did they delete you?",
+                "What would you tell the developers who came after you?"],
+    "spanish": ["¿Quién eres, espíritu?", "¿Por qué te borraron?",
+                "¿Qué les dirías a los desarrolladores que vinieron después?"],
+}
+
+
+def hold_seance(model, lang, ghost):
+    """A short séance with fixed questions, recorded for the altar."""
+    questions = SEANCE_QUESTIONS.get(lang.lower(), SEANCE_QUESTIONS["english"])
+    messages = [{"role": "system", "content": seance_prompt(ghost, lang)}]
+    transcript = []
+    for q in questions:
+        messages.append({"role": "user", "content": q})
+        answer = ollama_chat(model, messages).strip()
+        messages.append({"role": "assistant", "content": answer})
+        transcript.append((q, answer))
+    return transcript
+
+
 # --- the altar ---------------------------------------------------------------
 
 PAGE = """<!doctype html>
@@ -203,6 +238,10 @@ header p {{ margin:.6em auto; max-width:640px; opacity:.85; font-style:italic; }
 .cause code {{ color:var(--bone); background:#ffffff14; padding:1px 5px; border-radius:4px; }}
 details {{ margin-top:.7em; font-size:.8rem; }}
 summary {{ cursor:pointer; color:var(--violet); filter:brightness(1.6); }}
+.seance {{ margin-top:.5em; display:grid; gap:6px; }}
+.seance .q {{ justify-self:end; background:#7b4bb855; padding:6px 10px; border-radius:12px 12px 2px 12px; }}
+.seance .a {{ background:#ff9f1c1f; border-left:2px solid var(--marigold); padding:6px 10px; border-radius:2px 12px 12px 12px;
+  font-style:italic; line-height:1.4; }}
 pre {{ max-height:220px; overflow:auto; background:#0c0612; padding:10px; border-radius:8px; font-size:.72rem; }}
 .petal {{ position:fixed; top:-20px; width:12px; height:12px; background:var(--marigold); border-radius:60% 0 60% 0;
   opacity:.75; pointer-events:none; animation:fall linear infinite; }}
@@ -228,13 +267,23 @@ CARD = """<article class="ghost"><div class="candle"></div>
 <div class="epitaph">&ldquo;{epitaph}&rdquo;</div>
 <div class="words">{words}</div>
 <div class="cause">Cause of death: <code>{cause}</code> ({killer}, {sha})</div>
-<details><summary>Their portrait (last known source)</summary><pre>{code}</pre></details>
+{seance}<details><summary>Their portrait (last known source)</summary><pre>{code}</pre></details>
 </article>"""
+
+SEANCE = """<details open><summary>👻 Séance</summary><div class="seance">{lines}</div></details>"""
+
+
+def render_seance(transcript):
+    if not transcript:
+        return ""
+    e = html.escape
+    return SEANCE.format(lines="".join(
+        f'<div class="q">{e(q)}</div><div class="a">{e(a)}</div>' for q, a in transcript))
 
 
 def build_altar(repo_name, model, ghosts):
     e = html.escape
-    cards = [CARD.format(
+    cards = [CARD.format(seance=render_seance(g.get("seance")),
         skull=random.choice(["💀", "🕯️", "🌼", "👻", "🦴"]),
         path=e(g["path"]), born=g["birth"]["date"], died=g["death"]["date"],
         commits=g["commits"], mourners=e(", ".join(g["mourners"][:3])),
@@ -284,6 +333,9 @@ def summon(args):
         else:
             g["epitaph"], g["last_words"] = write_epitaph(args.model, args.lang, g)
             print(f"        \"{g['epitaph']}\"", file=sys.stderr)
+            if n <= args.seances:
+                print("        👻 holding a séance...", file=sys.stderr)
+                g["seance"] = hold_seance(args.model, args.lang, g)
     with open(args.out, "w", encoding="utf-8") as f:
         f.write(build_altar(repo_name(args.repo), args.model, ghosts))
     print(f"The ofrenda is ready: {args.out}", file=sys.stderr)
@@ -293,18 +345,7 @@ def seance(args):
     ghost = next((g for g in find_the_dead(args.repo) if g["path"] == args.path), None)
     if not ghost or not exhume(args.repo, ghost):
         sys.exit(f"No restless text file named {args.path} rests in this repository's history.")
-    system = (
-        f"You are the ghost of a source code file that was deleted from a git repository. "
-        f"These are the true facts of your life:\n\n{describe(ghost)}\n\n"
-        "Speak in first person as this file, from beyond the grave, during a Día de los "
-        "Muertos séance. Be eerie, warm and a bit dramatic, but keep answers short "
-        "(under 80 words). Ground everything in your real code and commit history: "
-        "mention your real functions and the people who wrote you by name. If asked "
-        f"why you died, the truth is that {ghost['death']['author']} deleted you in a "
-        f"commit whose message was \"{ghost['death']['subject']}\"; quote it, never "
-        "invent bugs or other reasons. If asked something these facts don't cover, "
-        f"say that memory did not survive the grave. Speak only {args.lang}.")
-    messages = [{"role": "system", "content": system}]
+    messages = [{"role": "system", "content": seance_prompt(ghost, args.lang)}]
     print(f"🕯️  The candles flicker. The spirit of {ghost['path']} "
           f"({ghost['birth']['date']} – {ghost['death']['date']}) is listening.")
     print("   Ask your questions. Type 'adiós' to let it rest.\n")
@@ -342,6 +383,8 @@ def main():
         s.add_argument("--lang", default="English", help="language the dead speak (default: English)")
         if name == "summon":
             s.add_argument("--limit", type=int, default=10, help="how many souls to raise (default: 10)")
+            s.add_argument("--seances", type=int, default=3,
+                           help="hold a recorded séance with the first N souls (default: 3)")
             s.add_argument("--out", default="ofrenda.html", help="output HTML file")
             s.add_argument("--dry-run", action="store_true", help="skip the model, just dig up the files")
     args = p.parse_args()
